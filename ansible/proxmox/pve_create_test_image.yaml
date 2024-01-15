@@ -1,0 +1,25 @@
+- hosts: pvenode1
+  become: false
+  gather_facts: false
+
+  tasks:
+
+    - name: create a test vm
+      proxmox_kvm:
+        api_user: "{{ api_user }}"
+        api_token_secret: "{{ lookup('file', 'api_token') }}"
+        api_token_id: "{{ api_token_id }}"
+        api_host: "{{ ansible_host }}"
+        node: "{{ node01_name }}"
+        name: "{{ test_vm_name }}"
+        state: present
+
+    - name: delete test vm
+      proxmox_kvm:
+        api_user: "{{ api_user }}"
+        api_token_secret: "{{ lookup('file', 'api_token') }}"
+        api_token_id: "{{ api_token_id }}"
+        api_host: "{{ ansible_host }}"
+        node: "{{ node01_name }}"
+        name: "{{ test_vm_name }}"
+        state: absent

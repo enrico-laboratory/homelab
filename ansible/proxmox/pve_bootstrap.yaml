@@ -1,0 +1,49 @@
+- name: bootstrap PVE servers
+  hosts: pvenodes
+  become: yes
+
+  tasks:
+
+    - name: copy no-subrscription repository list
+      copy:
+        src: "{{ item.src }}"
+        dest: "/etc/apt/{{ item.dest }}"
+        owner: root
+        group: root
+        mode: 0440
+      loop:
+        - {src: "pve_cfg_files/repository_list", dest: "source.list" }
+        - {src: "pve_cfg_files/repo_ceph", dest: "sources.list.d/ceph.list"}
+
+    - name: delete enterprise repo list
+      file:
+        state: absent
+        path: "/etc/apt/sources.list.d/pve-enterprise.list"
+
+    - name: install sudo and proxmoxer package
+      apt:
+        name:
+          - sudo
+          - python3-proxmoxer
+        update_cache: yes
+        cache_valid_time: 3600
+        state: latest
+
+    - name: create Ansible user
+      user:
+        name: ansible
+        shell: "/bin/bash"
+
+    - name: Ansible ssh key
+      authorized_key:
+        user: ansible
+        key: "{{ lookup('file', 'ansible_rsa.pub') }}"
+
+    - name: add ansible to sudoers
+      copy:
+        src: sudoer_ansible
+        dest: /etc/sudoers.d/ansible
+        owner: root
+        group: root
+        mode: 0440
+

@@ -1,0 +1,33 @@
+- name: Create storage
+  hosts: pvenodes
+  become: yes
+
+  tasks:
+    - name: check ZFS pool existance
+      command: zpool list -Ho name {{ zpool_name }}
+      register: result_pool_list
+      ignore_errors: yes
+      changed_when: false
+
+    - name: create zfs image pool
+      shell:
+        cmd: >-
+          zpool create
+          -O compression=lz4
+          -O creates=/tank
+          -o ashift=12
+          {{ zpool_name }}
+          {{ zpool_device }}
+      when: result_pool_list.rc == 1
+
+    - name: create vmimages dataset
+      zfs:
+        name: "{{ zpool_name }}/{{ zfs_dataset_name }}"
+        state: present
+
+    - name: copy storage config file
+      template:
+        src: pve_cfg_files/pve_storage_config.cfg
+        dest: "/etc/pve/storage.cfg"
+        owner: root
+        group: www-data

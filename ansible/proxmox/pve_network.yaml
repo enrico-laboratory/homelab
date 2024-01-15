@@ -1,0 +1,13 @@
+- name: Network configuration
+  hosts: pvenodes
+  become: yes
+
+  tasks:
+
+    - name: copy network file
+      template:
+        src: pve_cfg_files/interfaces_configuration
+        dest: /etc/network/interfaces
+        owner: root
+        group: root
+        mode: 0644
