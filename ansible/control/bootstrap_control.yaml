@@ -1,0 +1,68 @@
+- name: bootstrap control
+  hosts: control
+  become: yes
+
+  tasks:
+
+    - name: config eth
+      nmcli:
+        type: ethernet
+        conn_name: ethernet
+        ifname: eth0
+        ip4: 192.168.100.12/24
+        state: present
+
+    - name: remove default connection
+      nmcli:
+        type: ethernet
+        conn_name: "Wired connection 1"
+        state: absent
+
+    - name: install hashicorp repo
+      block:
+        - name: add gpg key
+          apt_key:
+            url: "https://apt.releases.hashicorp.com/gpg"
+            state: present
+        - name: add hasicorp repo
+          apt_repository:
+            repo: "deb [arch=arm64] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
+
+    - name: install packages
+      apt:
+        name:
+          - packer
+          - terraform
+          - ansible
+          - sshpass
+          - vim
+        update_cache: yes
+        state: latest
+
+    - name: create user
+      user:
+        name: ansible
+        shell: "/bin/bash"
+        create_home: yes
+
+    - name: add ansible to sudoers
+      copy:
+        src: sudoer_ansible
+        dest: /etc/sudoers.d/ansible
+        owner: root
+        group: root
+        mode: 0440
+
+    - name: create directory
+      file:
+        state: directory
+        path: /home/ansible/.ssh
+        owner: ansible
+        group: ansible
+
+    - name: create ssh key pair
+      openssh_keypair:
+        path: /home/ansible/.ssh/ansible_rsa
+        owner: ansible
+        group: ansible
+        state: present
