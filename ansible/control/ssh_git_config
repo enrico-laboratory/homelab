@@ -1,0 +1,5 @@
+Host enrico-laboratory
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/ansible_rsa.pub
+  IdentitiesOnly yes

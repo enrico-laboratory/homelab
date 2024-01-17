@@ -37,3 +37,10 @@
           - vim
         update_cache: yes
         state: latest
+
+    - name: copy ssh config for git
+      copy:
+        src: "ssh_git_config"
+        dest: "/home/{{ ansible_user }}/.ssh/config"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
