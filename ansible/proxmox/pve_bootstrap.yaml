@@ -37,7 +37,7 @@
     - name: Ansible ssh key
       authorized_key:
         user: ansible
-        key: "{{ lookup('file', '~/.ssh/ansible_rsa.pub') }}"
+        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 
     - name: add ansible to sudoers
       copy:

@@ -34,7 +34,7 @@
 
     - name: create ssh key pair
       openssh_keypair:
-        path: /home/ansible/.ssh/ansible_rsa
+        path: /home/ansible/.ssh/id_rsa
         owner: ansible
         group: ansible
         state: present
