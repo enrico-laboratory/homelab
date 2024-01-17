@@ -78,7 +78,7 @@ source "proxmox-iso" "ubuntu-server-focal" {
 
   # VM Cloud-Init Settings
   cloud_init = true
-  cloud_init_storage_pool = "local-lvm"
+  cloud_init_storage_pool = "vmimages"
 
   # PACKER Boot Commands
   boot_command = [
@@ -104,7 +104,7 @@ source "proxmox-iso" "ubuntu-server-focal" {
   # ssh_password = "your-password"
   # - or -
   # (Option 2) Add your Private SSH KEY file here
-  ssh_private_key_file = "~/.ssh/ansible_rsa"
+  ssh_private_key_file = "~/.ssh/id_rsa"
 
   # Raise the timeout, when installation takes longer
   ssh_timeout = "60m"
