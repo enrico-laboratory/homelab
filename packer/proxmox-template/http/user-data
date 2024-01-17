@@ -22,6 +22,13 @@ autoinstall:
     package_upgrade: false
     timezone: Europe/Amsterdam
     users:
+      - name: ansible
+        groups: [adm, sudo]
+        lock-passwd: false
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        shell: /bin/bash
+        ssh_authorized_keys: 
+	  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCwats2F1cWn3w7ysDMntWex5mES/gAmzv+NHIdHsX/ukL+JgzHKur1dEbVk7i9hrvXyF2HkPM6vnm7B62h3NVDFj1i6H8M/ULtEr+x58QSSGMhHMrOYCUTKoVWaluJOY2JwZTX5W7iV1baxktaITcUZX7u7C51ZaZtyfbGGN4KsLkB7xinidEQ2Kav1itm5DNaYVTb3DbVQBRUrghMsUuMwMO8h4hWJbTNVF6lmV2+c19qLJ/ynuluvSYwa9L2WKFzNBneFyvcq+IXCh20QHIDYRMpn6nD7NwtYXc8h3jSZTFFf5F0JgjKdK9H3qMuJkHASX1ln+UPWrBq0LYICI3oJAZgEuMPTchYjdQhpoX/WLd7pnoK0UbvsRQlsBLMyb/KqQ+Q11gIHlQoDbcVYvWlVCkHv1+xVL/JDBO/zS1j0djvrlJIk17tVbeCIHziCWT30HMJZVxV1vVmlNgcvGFNjCWLCwZF9PM0apOzoX6xYks1rZFOKbBCeRZhdho6CfI6+ty7hvK9jW3Q1U/6ay5sTpaCZ7O7Q+fYm21FkmNjWeNn3rIu0vb7TWMnErcZBUnE9yuVUKQELxgLBauk2lcrO/YVkSPjllYz/WyMESyoBiUfZ/PibibHwqj7F3IuVYAP+WYbJk862OLddYOxbyug1opv0In5Tzy5WHhUYSOuiQ==
       - name: eruggieri
         groups: [adm, sudo]
         lock-passwd: false
