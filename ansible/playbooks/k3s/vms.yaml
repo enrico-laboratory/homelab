@@ -8,10 +8,10 @@
     - proxmox_kvm:
         api_user: "{{ api_user }}"
         api_token_secret: "{{ lookup('file', 'api_token') }}"
-        api_token_id: "{{ api_token_id }}"
+        api_token_id: "{{ api_token_id_k3s }}"
         api_host: "{{ ansible_host }}"
         node: "{{ inventory_hostname }}"
-        name: "{{ test_vm_name }}"
+        name: "k3s-{{ item }}"
         clone: "{{ template_name }}"
         newid: "11{{ item }}"
         full: yes
@@ -20,14 +20,12 @@
         memory: 2048
         format: qcow2
 #        searchdomains: 'mydomain.internal'
+        update: yes
         nameservers:
           - '8.8.8.8'
         net:
           net0: 'virtio,bridge=vmbr0'
           net1: 'virtio,bridge=vmbr1'
-        ipconfig:
-          ipconfig0: "ip=192.168.2.11{{ item }}/24"
-          ipconfig1: "ip=192.168.100.5{{ item }}/24"
       loop:
         - 1
         - 2
