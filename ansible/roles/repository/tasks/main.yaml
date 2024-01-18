@@ -1,0 +1,29 @@
+- name: adding repository
+  block:
+    - name: create volumes directories
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        owner: root
+        group: root
+
+    - name: create keyring file
+      ansible.builtin.copy:
+        content: ""
+        dest: "/etc/apt/keyrings/{{ repo_key_name }}.gpg"
+        force: false
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Add an Apt signing key
+      ansible.builtin.apt_key:
+        url: "{{ repo_key_url }}"
+        keyring: "/etc/apt/keyrings/{{ repo_key_name }}.gpg"
+        state: present
+
+    - name: add repository
+      ansible.builtin.apt_repository:
+        repo:  "{{ repo }}"
+        state: present
+  when: ansible_distribution_file_variety == "Debian"
