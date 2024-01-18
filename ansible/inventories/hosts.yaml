@@ -1,0 +1,8 @@
+pvenodes:
+  hosts:
+    pvenode1:
+      ansible_host: "192.168.2.6"
+
+k3s:
+  hosts:
+    k3s-[1:4]:

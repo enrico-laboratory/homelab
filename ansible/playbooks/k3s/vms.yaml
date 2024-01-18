@@ -1,0 +1,30 @@
+- name: create vms
+  hosts: pvenodes
+  become: no
+  gather_facts: yes
+
+  tasks:
+
+    - proxmox_kvm:
+        api_user: "{{ api_user }}"
+        api_token_secret: "{{ lookup('file', 'api_token') }}"
+        api_token_id: "{{ api_token_id }}"
+        api_host: "{{ ansible_host }}"
+        node: "{{ inventory_hostname }}"
+        name: "{{ test_vm_name }}"
+        clone: "{{ template_name }}"
+        newid: "11{{ index }}"
+        full: yes
+        storage: "{{ storage_name }}"
+        cores: 2
+        memory: 2048
+        format: qcow2
+#        searchdomains: 'mydomain.internal'
+        nameservers:
+          - '8.8.8.8'
+        net:
+          net0: 'virtio,bridge=vmbr0'
+          net1: 'virtio,bridge=vmbr1'
+        ipconfig:
+          ipconfig0: 'ip=192.168.2.11{{ index }}/24'
+          ipconfig1: 'ip=192.168.100.5{{ index }}/24'
