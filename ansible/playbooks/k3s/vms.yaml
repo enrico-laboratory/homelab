@@ -5,7 +5,8 @@
 
   tasks:
 
-    - proxmox_kvm:
+    - name: deploy vms
+      proxmox_kvm:
         api_user: "{{ api_user }}"
         api_token_secret: "{{ lookup('file', 'api_token') }}"
         api_token_id: "{{ api_token_id_k3s }}"
@@ -19,15 +20,31 @@
         cores: 2
         memory: 2048
         format: qcow2
-#        searchdomains: 'mydomain.internal'
+      loop: [ 1,2,3,4 ]
+      register: present_state
+
+    - name: Wait for deployment
+      ansible.builtin.wait_for:
+        timeout: 15
+      delegate_to: localhost
+      when: present_state.changed
+
+    - name: update cloud-init values
+      proxmox_kvm:
+        api_user: "{{ api_user }}"
+        api_token_secret: "{{ lookup('file', 'api_token') }}"
+        api_token_id: "{{ api_token_id_k3s }}"
+        api_host: "{{ ansible_host }}"
+        node: "{{ inventory_hostname }}"
+        name: "k3s-{{ item }}"
         update: yes
+        #        searchdomains: 'mydomain.internal'
         nameservers:
           - '8.8.8.8'
         net:
           net0: 'virtio,bridge=vmbr0'
           net1: 'virtio,bridge=vmbr1'
-      loop:
-        - 1
-        - 2
-        - 3
-        - 4
+        ipconfig:
+          ipconfig0: "ip=192.168.2.11{{ item }}/24"
+          ipconfig1: "ip=192.168.100.5{{ item }}/24"
+      loop: [ 1,2,3,4 ]
