@@ -28,8 +28,8 @@
         ipconfig:
           ipconfig0: "ip=192.168.2.11{{ item }}/24"
           ipconfig1: "ip=192.168.100.5{{ item }}/24"
-    loop:
-      - 1
-      - 2
-      - 3
-      - 4
+      loop:
+        - 1
+        - 2
+        - 3
+        - 4
