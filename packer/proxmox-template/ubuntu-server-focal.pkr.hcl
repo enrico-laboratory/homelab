@@ -93,17 +93,12 @@ source "proxmox-iso" "ubuntu-server-focal" {
 
   # PACKER Autoinstall Settings
   http_directory = "http"
-  # (Optional) Bind IP Address and Port
+  # Bind IP Address and Port
   http_bind_address = "192.168.2.29"
   http_port_min = 8802
   http_port_max = 8802
 
   ssh_username = "ansible"
-
-  # (Option 1) Add your Password here
-  # ssh_password = "your-password"
-  # - or -
-  # (Option 2) Add your Private SSH KEY file here
   ssh_private_key_file = "~/.ssh/id_rsa"
 
   # Raise the timeout, when installation takes longer
@@ -142,6 +137,4 @@ build {
     inline = [ "sudo cp /tmp/99-pve.cfg /etc/cloud/cloud.cfg.d/99-pve.cfg" ]
   }
 
-  # Add additional provisioning scripts here
-  # ...
 }
