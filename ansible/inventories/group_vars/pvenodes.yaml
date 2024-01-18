@@ -1,0 +1,12 @@
+api_user: "ansible@pam"
+api_token_id: "ansible-bootstrap"
+node01_name: "node01"
+test_vm_name: "vmtest"
+
+zpool_name: "tank"
+zpool_device: "/dev/sdb"
+zfs_dataset_name: "images"
+iso_nfs_name: "truenas-iso-nfs"
+iso_nfs_export: "/mnt/slow-pool/iso"
+iso_nfs_mount: "/mnt/pve/truenas-iso-nfs"
+iso_nfs_server_ip: "192.168.100.61"
