@@ -1,3 +1,8 @@
+homelab:
+  hosts:
+    router:
+      ansible_host: "192.168.2.103"
+
 pvenodes:
   hosts:
     node01:
