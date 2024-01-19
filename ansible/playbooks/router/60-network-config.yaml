@@ -10,7 +10,6 @@ network:
           - 8.8.8.8
         search:
           - enricoruggieri.com
-      set-name: eth0
     eth0:
       addresses:
         - 192.168.100.1
@@ -21,3 +20,4 @@ network:
           - 8.8.8.8
         search:
           - enricoruggieri.com
+      set-name: eth0
