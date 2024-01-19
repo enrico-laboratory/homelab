@@ -5,7 +5,7 @@
 
     - name: copy network config file
       copy:
-        src: "60-network-config.yaml"
+        src: "40-network-config.yaml"
         dest: "/etc/netplan/"
         owner: root
         group: root

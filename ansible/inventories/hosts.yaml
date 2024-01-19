@@ -6,7 +6,7 @@ homelab:
 pvenodes:
   hosts:
     node01:
-      ansible_host: "192.168.2.6"
+      ansible_host: "192.168.100.10"
 
 k3s:
   hosts:
