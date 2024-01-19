@@ -10,11 +10,13 @@
         owner: root
         group: root
         mode: 0644
+      register: copy
 
     - name: apply config
       shell:
         cmd: |
           netplan apply
+      when: copy.changed
 
     - name: add port forwarding
       ansible.posix.sysctl:
