@@ -1,0 +1,11 @@
+- name: router
+  hosts: proxmox
+  become: no
+  tasks:
+
+    - name: deploy vm
+      import_role:
+        name: vms
+      vars:
+        vm_name: "router"
+        ip_address: "192.168.2.103"
