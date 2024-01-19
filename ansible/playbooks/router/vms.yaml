@@ -10,3 +10,4 @@
         name: "router"
         ip_address: "192.168.2.103"
         new_id: "130"
+        net0: 'virtio,bridge=vmbr1'

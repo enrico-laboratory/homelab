@@ -1,0 +1,17 @@
+- name: Configure network
+  hosts: router
+  become: yes
+  tasks:
+
+    - name: copy network config file
+      copy:
+        src: "60-network-config.yaml"
+        dest: "/etc/netplan/"
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: apply config
+      shell:
+        cmd: |
+          netplan apply
