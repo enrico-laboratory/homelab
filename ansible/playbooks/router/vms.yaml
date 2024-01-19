@@ -1,11 +1,12 @@
 - name: router
-  hosts: proxmox
+  hosts: node01 
   become: no
   tasks:
 
     - name: deploy vm
-      import_role:
+      include_role:
         name: vms
       vars:
-        vm_name: "router"
+        name: "router"
         ip_address: "192.168.2.103"
+        new_id: "130"

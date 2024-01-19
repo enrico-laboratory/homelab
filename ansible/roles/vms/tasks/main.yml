@@ -1,17 +1,17 @@
 - name: deploy vms
   proxmox_kvm:
     api_user: "{{ api_user }}"
-    api_token_secret: "{{ lookup('file', 'api_token') }}"
+    api_token_secret: "{{ lookup('file', '/home/ansible/homelab/ansible/common_cfg_file/api_token') }}"
     api_token_id: "{{ api_token_id_k3s }}"
     api_host: "{{ ansible_host }}"
     node: "{{ inventory_hostname }}"
     name: "{{ name }}"
     clone: "{{ template_name }}"
-    newid: "{{ new_id }}"
+    newid: "{{ new_id  }}"
     full: yes
     storage: "{{ storage_name | default('vmimages') }}"
     cores: "{{ cores | default('2') }}"
-    memory: "{{ memory | default('2048' }}"
+    memory: "{{ memory | default('2048') }}"
     format: qcow2
   register: present_state
 
@@ -24,11 +24,11 @@
 - name: update cloud-init values
   proxmox_kvm:
     api_user: "{{ api_user }}"
-    api_token_secret: "{{ lookup('file', 'api_token') }}"
+    api_token_secret: "{{ lookup('file', '/home/ansible/homelab/ansible/common_cfg_file/api_token') }}"
     api_token_id: "{{ api_token_id_k3s }}"
     api_host: "{{ ansible_host }}"
     node: "{{ inventory_hostname }}"
-    name: "k3s-{{ item }}"
+    name: "{{ name }}"
     update: yes
     # searchdomains: 'mydomain.internal'
     nameservers:

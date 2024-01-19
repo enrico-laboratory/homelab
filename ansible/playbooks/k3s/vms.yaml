@@ -25,7 +25,7 @@
 
     - name: Wait for deployment
       ansible.builtin.wait_for:
-        timeout: 15
+        timeout: 5
       delegate_to: localhost
       when: present_state.changed
 
@@ -41,10 +41,6 @@
         #        searchdomains: 'mydomain.internal'
         nameservers:
           - '8.8.8.8'
-        net:
-          net0: 'virtio,bridge=vmbr0'
-          net1: 'virtio,bridge=vmbr1'
         ipconfig:
           ipconfig0: "ip=192.168.2.11{{ item }}/24"
-          ipconfig1: "ip=192.168.100.5{{ item }}/24"
       loop: [ 1,2,3,4 ]
