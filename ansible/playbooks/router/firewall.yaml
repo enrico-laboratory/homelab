@@ -9,7 +9,7 @@
         dest: "/home/root/firewall.sh"
         owner: root
         group: root
-        mode: 755
+        mode: 0755
       register: script
 
     - name: copy systemd service
