@@ -17,8 +17,7 @@
 
 - name: Wait for deployment
   ansible.builtin.wait_for:
-    timeout: 10
-  delegate_to: localhost
+    timeout: 6
   when: present_state.changed
 
 - name: update cloud-init values
@@ -37,3 +36,19 @@
       net0: "{{ net0 | default('virtio,bridge=vmbr0') }}"
     ipconfig:
       ipconfig0: "ip={{ ip_address }}/24"
+  register: present_state
+
+- name: Wait for deployment
+  ansible.builtin.wait_for:
+    timeout: 6
+  when: present_state.changed
+
+- name: start vms
+  proxmox_kvm:
+    api_user: "{{ api_user }}"
+    api_token_secret: "{{ lookup('file', '/home/ansible/homelab/ansible/common_cfg_file/api_token') }}"
+    api_token_id: "{{ api_token_id_k3s }}"
+    api_host: "{{ ansible_host }}"
+    node: "{{ inventory_hostname }}"
+    name: "{{ name }}"
+    state: "{{ state | default('started') }}"
