@@ -9,7 +9,7 @@
         dest: /etc/init.d/firewall.sh
         owner: root
         group: root
-        mode: 755
+        mode: 0755
       register: script
 
     - name: execute firewall script
