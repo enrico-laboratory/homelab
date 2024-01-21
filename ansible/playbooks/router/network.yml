@@ -28,14 +28,14 @@
     - name: set rp filters
       ansible.posix.sysctl:
         name: net.ipv4.conf.default.rp_filter
-        value: '1'
+        value: '0'
         sysctl_set: true
         state: present
         reload: true
     - name: set rp filters default
       ansible.posix.sysctl:
         name: net.ipv4.conf.all.rp_filter
-        value: '1'
+        value: '0'
         sysctl_set: true
         state: present
         reload: true
