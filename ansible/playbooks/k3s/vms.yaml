@@ -4,43 +4,31 @@
   gather_facts: yes
 
   tasks:
-
-    - name: deploy vms
-      proxmox_kvm:
-        api_user: "{{ api_user }}"
-        api_token_secret: "{{ lookup('file', 'api_token') }}"
-        api_token_id: "{{ api_token_id_k3s }}"
-        api_host: "{{ ansible_host }}"
-        node: "{{ inventory_hostname }}"
-        name: "k3s-{{ item }}"
-        clone: "{{ template_name }}"
-        newid: "11{{ item }}"
-        full: yes
-        storage: "{{ storage_name }}"
-        cores: 2
-        memory: 2048
-        format: qcow2
-      loop: [ 1,2,3,4 ]
-      register: present_state
-
-    - name: Wait for deployment
-      ansible.builtin.wait_for:
-        timeout: 5
-      delegate_to: localhost
-      when: present_state.changed
-
-    - name: update cloud-init values
-      proxmox_kvm:
-        api_user: "{{ api_user }}"
-        api_token_secret: "{{ lookup('file', 'api_token') }}"
-        api_token_id: "{{ api_token_id_k3s }}"
-        api_host: "{{ ansible_host }}"
-        node: "{{ inventory_hostname }}"
-        name: "k3s-{{ item }}"
-        update: yes
-        #        searchdomains: 'mydomain.internal'
-        nameservers:
-          - '8.8.8.8'
-        ipconfig:
-          ipconfig0: "ip=192.168.2.11{{ item }}/24"
-      loop: [ 1,2,3,4 ]
+    - name: deploy k3s-1
+      include_role:
+        name: vms
+      vars:
+        name: "k3s-1"
+        ip_address: "192.168.100.111"
+        new_id: "111"
+    - name: deploy k3s-2
+      include_role:
+        name: vms
+      vars:
+        name: "k3s-1"
+        ip_address: "192.168.100.112"
+        new_id: "112"
+    - name: deploy k3s-3
+      include_role:
+        name: vms
+      vars:
+        name: "k3s-1"
+        ip_address: "192.168.100.113"
+        new_id: "113"
+    - name: deploy k3s-4
+      include_role:
+        name: vms
+      vars:
+        name: "k3s-1"
+        ip_address: "192.168.100.114"
+        new_id: "114"
