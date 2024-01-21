@@ -8,6 +8,7 @@
     name: "{{ name }}"
     state: "{{ state }}"
     update: yes
+  when: state != "absent"
 
 - name: deploy vm
   block:
