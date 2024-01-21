@@ -18,7 +18,7 @@ autoinstall:
     swap:
       size: 0
   user-data:
-    package_upgrade: true
+    package_upgrade: false 
     timezone: Europe/Amsterdam
     users:
       - name: ansible
