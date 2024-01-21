@@ -39,3 +39,14 @@
         sysctl_set: true
         state: present
         reload: true
+
+    - name: add NAT
+      iptables:
+        chain: POSTROUTING
+        table: nat
+        source: 192.168.100.0/24
+        out_interface: ens16f1
+        jump: SNAT
+        to_source: 192.168.2.103
+
+ #       iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o enp0s3 -j SNAT --to-source 80.0.0.1
