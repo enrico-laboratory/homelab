@@ -45,7 +45,8 @@
         chain: POSTROUTING
         table: nat
         source: 192.168.100.0/24
-        out_interface: ens16f1
+        out_interface: ens16f0
+        state: present
         jump: SNAT
         to_source: 192.168.2.103
 
