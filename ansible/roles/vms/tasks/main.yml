@@ -33,7 +33,7 @@
     nameservers:
       - '8.8.8.8'
     net:
-      net0: "{{ net0 | default('virtio,bridge=vmbr0') }}"
+      net0: "{{ net0 | default('virtio,bridge=vmbr1') }}"
     ipconfig:
       ipconfig0: "ip={{ ip_address }}/24"
   register: present_state
