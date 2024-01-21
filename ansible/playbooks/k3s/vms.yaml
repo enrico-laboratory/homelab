@@ -2,6 +2,8 @@
   hosts: pvenodes
   become: no
   gather_facts: yes
+  vars:
+    state: "present"
 
   tasks:
     - name: deploy k3s-1

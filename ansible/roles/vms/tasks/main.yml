@@ -8,7 +8,7 @@
     name: "{{ name }}"
     clone: "{{ template_name }}"
     newid: "{{ new_id  }}"
-    state: "{{ state | default('present') }}"
+    state: "{{ state }}"
     full: yes
     storage: "{{ storage_name | default('vmimages') }}"
     cores: "{{ cores | default('2') }}"
