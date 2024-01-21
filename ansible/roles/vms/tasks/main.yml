@@ -6,7 +6,7 @@
     api_host: "{{ ansible_host }}"
     node: "{{ inventory_hostname }}"
     name: "{{ name }}"
-    state: "{{ state }}"
+    state: "absent"
     update: yes
   when: state == "absent"
 
@@ -50,7 +50,7 @@
       nameservers:
         - '8.8.8.8'
       ipconfig:
-        ipconfig0: "ip={{ ip_address }}/24"
+        ipconfig0: "ip={{ ip_address }}/24,gw=192.168.100.1"
     register: present_state
 
   - name: Wait for updates
