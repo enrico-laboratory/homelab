@@ -1,0 +1,28 @@
+- name: firewall configuration
+  become: yes
+  hosts: router
+
+  tasks:
+    - name: copy firewall script
+      copy:
+        src: firewall.sh
+        dest: /etc/init.d/firewall.sh
+        owner: root
+        group: root
+        mode: 755
+      register: script
+
+    - name: execute firewall script
+      shell:
+        cmd: |
+          /etc/init.d/firewall.sh
+      when: script.changed
+
+    - name: register script
+      shell:
+        cmd: update-rc.d firewall.sh defaults
+      register: registration
+
+    - debug:
+        msg: "{{ registration }}"
+
