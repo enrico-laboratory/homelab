@@ -8,7 +8,7 @@
     name: "{{ name }}"
     state: "{{ state }}"
     update: yes
-  when: state != "absent"
+  when: state == "absent"
 
 - name: deploy vm
   block:
@@ -21,12 +21,15 @@
       node: "{{ inventory_hostname }}"
       name: "{{ name }}"
       clone: "{{ template_name }}"
-      newid: "{{ new_id  }}"
+      newid: "{{ new_id }}"
       full: yes
       storage: "{{ storage_name | default('vmimages') }}"
       cores: "{{ cores | default('2') }}"
       memory: "{{ memory | default('2048') }}"
       format: qcow2
+      # not upddating the network configuration 
+      # net:
+      #   net0: "{{ net0 }}"
     register: present_state
 
   - name: Wait for deployment
@@ -46,13 +49,11 @@
       # searchdomains: 'mydomain.internal'
       nameservers:
         - '8.8.8.8'
-      net:
-        net0: "{{ net0 | default('virtio,bridge=vmbr1') }}"
       ipconfig:
         ipconfig0: "ip={{ ip_address }}/24"
     register: present_state
 
-  - name: Wait for deployment
+  - name: Wait for updates
     ansible.builtin.wait_for:
       timeout: 6
     when: present_state.changed
@@ -65,6 +66,7 @@
       api_host: "{{ ansible_host }}"
       node: "{{ inventory_hostname }}"
       name: "{{ name }}"
-      state: "{{ state | default('started') }}"
+      update: yes
+      state: "started"
 
   when: state != "absent"
