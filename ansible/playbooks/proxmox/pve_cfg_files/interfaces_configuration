@@ -5,8 +5,8 @@ iface enp8s0f0 inet manual
 
 iface enp6s0 inet manual
 
-auto vmbr1
-iface vmbr1 inet static
+auto vmbr0
+iface vmbr0 inet static
      address 192.168.100.10/24
      bridge-ports enp6s0
      bridge-stp off
