@@ -6,7 +6,7 @@
     - name: copy firewall script
       copy:
         src: firewall.sh
-        dest: "/home/root/firewall.sh"
+        dest: "/root/firewall.sh"
         owner: root
         group: root
         mode: 0755

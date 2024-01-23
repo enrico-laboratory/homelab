@@ -2,6 +2,6 @@
 Description=Firewall Script
 After=network.target
 [Service]
-ExecStart=/home/root/firewall.sh
+ExecStart=/root/firewall.sh
 [Install]
 WantedBy=default.target
