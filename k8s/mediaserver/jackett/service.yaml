@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jackett-service
+  namespace: mediaserver
+spec:
+  selector:
+    app: jackett
+  ports:
+    - port: 9117

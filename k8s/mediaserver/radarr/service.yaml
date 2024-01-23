@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: radarr-service
+  namespace: mediaserver
+spec:
+  selector:
+    app: radarr
+  ports:
+    - port: 7878

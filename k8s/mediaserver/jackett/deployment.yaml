@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jackett
+  namespace: mediaserver
+  labels:
+    app: jackett
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jackett
+  template:
+    metadata:
+      labels:
+        app: jackett
+    spec:
+      containers:
+        - name: jackett
+          image: ghcr.io/linuxserver/jackett
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "Europe/Amsterdam"
+            - name: JELLYFIN_PublishedServerUrl
+              value: "192.168.56.30"
+          volumeMounts:
+            - mountPath: /config
+              name: config
+            - mountPath: /downloads
+              name: downloads
+      volumes:
+        - name: config
+          nfs:
+            server: 192.168.100.61
+            path: /mnt/fast-pool1/docker-configs/jackett
+        - name: downloads
+          nfs:
+            server: 192.168.100.61
+            path: /mnt/slow-pool/media/torrent/downloads

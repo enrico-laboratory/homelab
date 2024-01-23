@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: homer-service
+  namespace: mediaserver
+spec:
+  selector:
+    app: homer
+  ports:
+    - port: 8080
