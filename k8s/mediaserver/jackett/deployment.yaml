@@ -25,8 +25,6 @@ spec:
               value: "1000"
             - name: TZ
               value: "Europe/Amsterdam"
-            - name: JELLYFIN_PublishedServerUrl
-              value: "192.168.56.30"
           volumeMounts:
             - mountPath: /config
               name: config

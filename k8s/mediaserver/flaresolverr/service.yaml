@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: flaresolverr-service
+  namespace: mediaserver
+spec:
+  selector:
+    app: flaresolverr
+  ports:
+    - port: 8191
