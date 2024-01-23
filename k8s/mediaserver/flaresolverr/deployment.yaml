@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: flaresolverr
-          image: ghcr.io/linuxserver/jackett
+          image: ghcr.io/flaresolverr/flaresolverr:latest
           env:
             - name: LOG_LEVEL
               value: "info"
