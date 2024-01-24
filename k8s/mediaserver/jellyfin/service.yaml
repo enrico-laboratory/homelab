@@ -4,7 +4,7 @@ metadata:
   name: jellyfin-service
   namespace: mediaserver
   annotations:
-    metallb.universe.tf/loadBalancerIPs: 192.168.100.250
+    metallb.universe.tf/loadBalancerIPs: 192.168.100.234
 spec:
   type: LoadBalancer
   selector:

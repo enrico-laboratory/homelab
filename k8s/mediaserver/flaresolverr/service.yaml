@@ -4,6 +4,7 @@ metadata:
   name: flaresolverr-service
   namespace: mediaserver
 spec:
+  type: LoadBalancer
   selector:
     app: flaresolverr
   ports:
