@@ -4,6 +4,7 @@ metadata:
   name: calibreweb-service
   namespace: mediaserver
 spec:
+  type: LoadBalancer
   selector:
     app: calibreweb
   ports:
