@@ -117,4 +117,7 @@ services:
       - name: "Tailscale"
         url: "https://login.tailscale.com/admin/machines"
         target: "_blank"
+      - name: "ArgoCD"
+        url: "https://argocd.enricoruggieri.com"
+        target: "_blank"
 
