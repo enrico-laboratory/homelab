@@ -6,6 +6,7 @@ metadata:
   annotations:
     metallb.universe.tf/loadBalancerIPs: 192.168.100.235
 spec:
+  type: LoadBalancer
   selector:
     app: radarr
   ports:
