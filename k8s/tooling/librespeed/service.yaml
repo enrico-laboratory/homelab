@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: librespeed-service
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 192.168.100.238
+spec:
+  type: LoadBalancer
+  selector:
+    app: librespeed
+  ports:
+    - port: 80
+
