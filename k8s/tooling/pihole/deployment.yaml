@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pihole
+  labels:
+    app: pihole
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pihole
+  template:
+    metadata:
+      labels:
+        app: pihole
+    spec:
+      containers:
+        - name: pihole
+          image: pihole/pihole:latest
+          env:
+            - name: MODE
+              value: "standalone"
+#            - name: PUID
+#              value: "1000"
+            - name: TZ
+              value: "Europe/Amsterdam"
+            - name: WEBPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pihole-secrets
+                  key: pass
+          volumeMounts:
+            - mountPath: /etc/dnsmasq.d
+              name: dns-cnames
+            - mountPath: /etc/pihole
+              name: dns-a-records
+      volumes:
+        - name: dns-a-records
+          configMap:
+            name: dns-a-records
+            items:
+              - key: custom.list
+                path: custom.list
+        - name: dns-cnames
+          configMap:
+            name: dns-cnames
+            items:
+              - key: "05-pihole-custom-cname.conf"
+                path: "05-pihole-custom-cname.conf"

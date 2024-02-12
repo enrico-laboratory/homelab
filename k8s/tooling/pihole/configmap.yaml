@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dns-cnames
+data:
+  05-pihole-custom-cname.conf: |
+    cname=jellyfin.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=sonarr.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=radarr.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=transmission.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=jackett.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=organizr.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=homer.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=calibreweb.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=music-projects-web.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=grafana.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=projects-local.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=prometheus.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=alertmanager.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=librespeed.enricoruggieri.com,k3s-1.enricoruggieri.com
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dns-a-records
+data:
+  custom.list: |
+    192.168.100.1 router.enricoruggieri.com
+    192.168.100.10 proxmox.enricoruggieri.com
+    192.168.100.61 truenas.enricoruggieri.com
+    192.168.100.60 truenas-backup.enricoruggieri.com
+    192.168.100.40 win-gaming.enricoruggieri.com
+    192.168.100.52 pihole.enricoruggieri.com
+    192.168.100.54 linux-desktop.enricoruggieri.com
+    192.168.100.111 k3s-1.enricoruggieri.com
+    192.168.100.250 argocd.enricoruggieri.com
