@@ -31,19 +31,15 @@ spec:
                   key: pass
           volumeMounts:
             - mountPath: /etc/dnsmasq.d
-              name: dns-cnames
+              name: dnsmasq
             - mountPath: /etc/pihole
-              name: dns-a-records
+              name: config
       volumes:
-        - name: dns-a-records
-          configMap:
-            name: dns-a-records
-            items:
-              - key: custom.list
-                path: custom.list
-        - name: dns-cnames
-          configMap:
-            name: dns-cnames
-            items:
-              - key: "05-pihole-custom-cname.conf"
-                path: "05-pihole-custom-cname.conf"
+        - name: config
+          nfs:
+            server: 192.168.100.61
+            path: /mnt/fast-pool1/docker-configs/pihole/config
+        - name: dnsmasq
+          nfs:
+            server: 192.168.100.61
+            path: /mnt/fast-pool1/docker-configs/pihole/dnsmasq.d
