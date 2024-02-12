@@ -10,8 +10,11 @@ spec:
     app: pihole
   ports:
     - port: 80
+      name: http
       protocol: TCP
     - port: 53
+      name: dns-udp
       protocol: UDP
     - port: 53
+      name: dns-tcp
       protocol: TCP
