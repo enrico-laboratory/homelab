@@ -1,0 +1,17 @@
+- name: copy DNS records list
+  copy:
+    src: "{{ dns_list_name }}"
+    dest: "{{ dns_list_path }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart pihole
+
+- name: copy CNAME records list
+  copy:
+    src: "{{ cname_list_name }}"
+    dest: "{{ cname_list_path }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart pihole
