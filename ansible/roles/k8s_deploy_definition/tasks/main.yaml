@@ -1,0 +1,5 @@
+- name: deploy definitions
+  include_tasks: deploy_definition.yml
+  loop: "{{ app }}"
+  loop_control:
+    loop_var: outer_loop

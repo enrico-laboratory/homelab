@@ -1,0 +1,37 @@
+- name: adding repository
+  block:
+    - name: create volumes directories
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        owner: root
+        group: root
+
+    - name: create keyring file
+      ansible.builtin.copy:
+        content: ""
+        dest: /etc/apt/keyrings/helm.gpg
+        force: false
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Add an Apt signing key
+      ansible.builtin.apt_key:
+        url: https://baltocdn.com/helm/signing.asc
+        keyring: /etc/apt/keyrings/helm.gpg
+        state: present
+
+    - name: add repository
+      ansible.builtin.apt_repository:
+        repo:  "deb [arch=amd64 signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian all main"
+        state: present
+
+  when: ansible_distribution_file_variety == "Debian"
+
+- name: install help package
+  package:
+    name:
+      - helm
+    state: latest
+

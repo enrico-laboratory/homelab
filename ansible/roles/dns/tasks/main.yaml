@@ -1,17 +1,64 @@
-- name: copy DNS records list
-  copy:
-    src: "{{ dns_list_name }}"
-    dest: "{{ dns_list_path }}"
-    owner: root
-    group: root
-    mode: 0644
-  notify: restart pihole
+- name: deploy on vms
+  block:
+    - name: copy DNS records list
+      copy:
+        src: "{{ dns_list_name }}"
+        dest: "{{ dns_list_path }}"
+        owner: root
+        group: root
+        mode: 0644
+      notify: restart pihole
 
-- name: copy CNAME records list
-  copy:
-    src: "{{ cname_list_name }}"
-    dest: "{{ cname_list_path }}"
-    owner: root
-    group: root
-    mode: 0644
-  notify: restart pihole
+    - name: copy CNAME records list
+      copy:
+        src: "{{ cname_list_name }}"
+        dest: "{{ cname_list_path }}"
+        owner: root
+        group: root
+        mode: 0644
+      notify: restart pihole
+  when: deploy_on_docker == False
+
+- name: deploy on docker
+  block:
+    - name: search for pihole pod
+      kubernetes.core.k8s_info:
+        kind: Pod
+        label_selectors:
+          - "app = pihole"
+      register: out
+
+    - name: copy custom list
+      copy:
+        src: "{{ item }}"
+        dest: /tmp/
+      loop:
+        - "{{ dns_list_name }}"
+        - "{{ cname_list_name }}"
+    - name: copy confs
+      kubernetes.core.k8s_cp:
+        namespace: "{{ ns }}"
+        pod: "{{ out.resources[0].metadata.name }}"
+        remote_path: "{{ item.dest }}"
+        local_path: "/tmp/{{ item.src }}"
+      loop:
+        - { "src": "{{ dns_list_name }}", dest: "{{ dns_list_path }}"}
+        - { "src": "{{ cname_list_name }}", dest: "{{ cname_list_path }}"}
+
+    - name: remove temp files
+      file:
+        path: "/tmp/{{ item }}"
+        state: absent
+      loop:
+        - "{{ dns_list_name }}"
+        - "{{ cname_list_name }}"
+
+    - name: Delete pod to restart the pihole process
+      kubernetes.core.k8s:
+        state: absent
+        api_version: v1
+        kind: Pod
+        namespace: "{{ ns }}"
+        name: "{{ out.resources[0].metadata.name }}"
+
+  when: deploy_on_docker

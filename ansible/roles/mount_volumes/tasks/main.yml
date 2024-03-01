@@ -1,0 +1,15 @@
+- name: create volumes directories
+  file:
+    path: "/volumes/{{ item }}"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+  loop: "{{ volumes_directories }}"
+
+- name: mount lvs
+  ansible.posix.mount:
+    path: "{{ item.path }}"
+    src: "{{ item.src }}"
+    state: mounted
+    fstype: "{{ item.fstype }}"
+  loop: "{{ volumes_mounts }}"

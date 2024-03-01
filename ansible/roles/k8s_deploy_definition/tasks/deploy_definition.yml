@@ -1,0 +1,5 @@
+- name: deploy definition {{ outer_loop.name }}
+  kubernetes.core.k8s:
+    state: "{{ outer_loop.state }}"
+    definition: "{{ lookup('file', base_dir + '/k8s/' + namespace + '/' + outer_loop.name + '/' + item + '.yaml') | from_yaml }}"
+  loop: "{{ outer_loop.objects }}"

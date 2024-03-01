@@ -1,13 +1,52 @@
 - name: delete vms
-  proxmox_kvm:
-    api_user: "{{ api_user }}"
-    api_token_secret: "{{ lookup('file', '/home/ansible/homelab/ansible/common_cfg_file/api_token') }}"
-    api_token_id: "{{ api_token_id_k3s }}"
-    api_host: "{{ ansible_host }}"
-    node: "{{ inventory_hostname }}"
-    name: "{{ name }}"
-    state: "absent"
-    update: yes
+  block:
+    - name: check vm status
+      community.general.proxmox_vm_info:
+        api_user: "{{ api_user }}"
+        api_token_secret: "{{ lookup('file', api_token_dir + '/api_token') }}"
+        api_token_id: "{{ api_token_id_k3s }}"
+        api_host: "{{ ansible_host }}"
+        node: "{{ inventory_hostname }}"
+        name: "{{ name }}"
+      register: status
+
+
+
+    - name: stop vm if running
+      proxmox_kvm:
+        api_user: "{{ api_user }}"
+        api_token_secret: "{{ lookup('file', api_token_dir + '/api_token') }}"
+        api_token_id: "{{ api_token_id_k3s }}"
+        api_host: "{{ ansible_host }}"
+        node: "{{ inventory_hostname }}"
+        name: "{{ name }}"
+        state: "stopped"
+        update: yes
+      when: status.proxmox_vms[0].status == "running"
+
+    - name: check vm status
+      community.general.proxmox_vm_info:
+        api_user: "{{ api_user }}"
+        api_token_secret: "{{ lookup('file', api_token_dir + '/api_token') }}"
+        api_token_id: "{{ api_token_id_k3s }}"
+        api_host: "{{ ansible_host }}"
+        node: "{{ inventory_hostname }}"
+        name: "{{ name }}"
+      register: status
+      failed_when: status.proxmox_vms[0].status == "running"
+      retries: 10
+      delay: 3
+
+    - name: delete vm
+      proxmox_kvm:
+        api_user: "{{ api_user }}"
+        api_token_secret: "{{ lookup('file', api_token_dir + '/api_token') }}"
+        api_token_id: "{{ api_token_id_k3s }}"
+        api_host: "{{ ansible_host }}"
+        node: "{{ inventory_hostname }}"
+        name: "{{ name }}"
+        state: "absent"
+        update: yes
   when: state == "absent"
 
 - name: deploy vm
@@ -15,7 +54,7 @@
   - name: create vm
     proxmox_kvm:
       api_user: "{{ api_user }}"
-      api_token_secret: "{{ lookup('file', '/home/ansible/homelab/ansible/common_cfg_file/api_token') }}"
+      api_token_secret: "{{ lookup('file', api_token_dir + '/api_token') }}"
       api_token_id: "{{ api_token_id_k3s }}"
       api_host: "{{ ansible_host }}"
       node: "{{ inventory_hostname }}"
@@ -24,8 +63,6 @@
       newid: "{{ new_id }}"
       full: yes
       storage: "{{ storage_name | default('vmimages') }}"
-      cores: "{{ cores | default('2') }}"
-      memory: "{{ memory | default('2048') }}"
       format: qcow2
       # not upddating the network configuration 
       # net:
@@ -40,12 +77,15 @@
   - name: update cloud-init values
     proxmox_kvm:
       api_user: "{{ api_user }}"
-      api_token_secret: "{{ lookup('file', '/home/ansible/homelab/ansible/common_cfg_file/api_token') }}"
+      api_token_secret: "{{ lookup('file', api_token_dir + '/api_token') }}"
       api_token_id: "{{ api_token_id_k3s }}"
       api_host: "{{ ansible_host }}"
       node: "{{ inventory_hostname }}"
       name: "{{ name }}"
       update: yes
+      onboot: "{{ onboot | default('yes') }}"
+      cores: "{{ cores | default('2') }}"
+      memory: "{{ memory | default('2048') }}"
       # searchdomains: 'mydomain.internal'
       nameservers:
         - '8.8.8.8'
@@ -61,7 +101,7 @@
   - name: start vms
     proxmox_kvm:
       api_user: "{{ api_user }}"
-      api_token_secret: "{{ lookup('file', '/home/ansible/homelab/ansible/common_cfg_file/api_token') }}"
+      api_token_secret: "{{ lookup('file', api_token_dir + '/api_token') }}"
       api_token_id: "{{ api_token_id_k3s }}"
       api_host: "{{ ansible_host }}"
       node: "{{ inventory_hostname }}"
