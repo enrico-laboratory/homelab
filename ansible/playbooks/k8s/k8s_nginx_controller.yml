@@ -1,0 +1,75 @@
+- name: Deploy media server
+  become: yes
+  hosts: k8s-admin
+  vars:
+    base_dir: "/Users/{{ main_user.name }}/repos/kubernetes-ingress"
+  tasks:
+    ### Kubernetes NGINX controller https://kubernetes.github.io/ingress-nginx/deploy/
+    - name: get manifest
+      get_url:
+        url: "https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.2/deploy/static/provider/baremetal/deploy.yaml"
+        dest: "/tmp/deploy.yaml"
+    - name: deploy controller
+      k8s:
+        state: absent
+        src: "/tmp/deploy.yaml"
+    - name: create ingress class
+      k8s:
+        state: absent
+        definition:
+          apiVersion: networking.k8s.io/v1
+          kind: IngressClass
+          metadata:
+            labels:
+              app.kubernetes.io/component: controller
+            name: nginx
+            annotations:
+              ingressclass.kubernetes.io/is-default-class: "true"
+          spec:
+            controller: k8s.io/ingress-nginx
+
+    ### nginx version of NGINX controller https://docs.nginx.com/nginx-ingress-controller/installation/installing-nic/installation-with-manifests/#before-you-start
+    - name: create namespace
+      kubernetes.core.k8s:
+        definition: "{{ lookup('file', base_dir + '/deployments/common/ns-and-sa.yaml') | from_yaml_all }}"
+        state: absent
+
+    - name: create roles and role bindings
+      kubernetes.core.k8s:
+        definition: "{{ lookup('file', base_dir + '/deployments/rbac/rbac.yaml') | from_yaml_all }}"
+        state: absent
+
+    - name: create config map
+      kubernetes.core.k8s:
+        definition: "{{ lookup('file', base_dir + '/deployments/common/nginx-config.yaml') | from_yaml_all }}"
+        state: absent
+
+    - name: create ingress class
+      kubernetes.core.k8s:
+        definition: "{{ lookup('file', base_dir + '/deployments/common/ingress-class.yaml') | from_yaml_all }}"
+        state: absent
+
+    - name: Create CRDs for VirtualServer and VirtualServerRoute, TransportServer, Policy and GlobalConfiguration
+      kubernetes.core.k8s:
+        definition: "{{ lookup('file', base_dir + '/' + item) | from_yaml_all }}"
+        state: absent
+      loop:
+        - config/crd/bases/k8s.nginx.org_virtualservers.yaml
+        - config/crd/bases/k8s.nginx.org_virtualserverroutes.yaml
+        - config/crd/bases/k8s.nginx.org_transportservers.yaml
+        - config/crd/bases/k8s.nginx.org_policies.yaml
+        - config/crd/bases/k8s.nginx.org_globalconfigurations.yaml
+
+    - name: Deploy NGINX Ingress Controller as deployment
+      kubernetes.core.k8s:
+        definition: "{{ lookup('file', base_dir + '/deployments/deployment/nginx-ingress.yaml') | from_yaml_all }}"
+        state: absent
+    - name: Deploy NGINX Ingress Controller as daemonset
+      kubernetes.core.k8s:
+        definition: "{{ lookup('file', base_dir + '/deployments/daemon-set/nginx-ingress.yaml') | from_yaml_all }}"
+        state: absent
+
+    - name: create nodeport
+      kubernetes.core.k8s:
+        definition: "{{ lookup('file', base_dir + '/deployments/service/nodeport.yaml') | from_yaml_all }}"
+        state: absent

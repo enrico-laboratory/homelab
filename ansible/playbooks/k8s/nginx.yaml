@@ -1,0 +1,38 @@
+- name: deploy nginx
+  hosts: k3s-1
+  vars:
+    helm_repo_name: "nginx-stable"
+    nm: "nginx-ingress"
+    state: "present"
+    nginx_folder: "../../../k8s/nginx-ingress/nginx"
+    values_filename: "values.yaml"
+
+  tasks:
+    - name: deploy prometheus
+      block:
+        - name: Add stable chart repo
+          kubernetes.core.helm_repository:
+            name: "{{ helm_repo_name }}"
+            repo_url: "https://helm.nginx.com/stable"
+            state: "{{ state }}"
+
+        - name: copy values for helm chart
+          copy:
+            src: "{{ nginx_folder }}/{{ values_filename }}"
+            dest: "/tmp/{{ values_filename }}.yaml"
+          changed_when: false
+
+        - name: Deploy nginx
+          kubernetes.core.helm:
+            name: nginx
+            chart_ref: "{{ helm_repo_name }}/nginx-ingress"
+            release_namespace: "{{ nm }}"
+            create_namespace: true
+            values_files:
+              - "/tmp/{{ values_filename }}.yaml"
+            state: "{{ state }}"
+        - name: remove value
+          file:
+            path: "/tmp/{{ values_filename }}.yaml"
+            state: absent
+          changed_when: false

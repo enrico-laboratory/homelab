@@ -1,0 +1,65 @@
+- name: mediaserver with argo
+  hosts: k3s-1
+  vars:
+    project: "mediaserver"
+    repo: "https://github.com/enrico-laboratory/homelab"
+    app_list:
+      - "calibreweb"
+      - "homer"
+      - "jackett"
+      - "jellyfin"
+      - "radarr"
+      - "sonarr"
+      - "transmission"
+      - "flaresolverr"
+  tasks:
+    - name: Create namespace
+      kubernetes.core.k8s:
+        name: "{{ project }}"
+        api_version: v1
+        kind: Namespace
+        state: present
+
+    - name: create Argocd Project
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: argoproj.io/v1alpha1
+          kind: AppProject
+          metadata:
+            name: "{{ project }}"
+            namespace: argocd
+            finalizers:
+              - resources-finalizer.argocd.argoproj.io
+          spec:
+            description: Project for the Media Server
+            sourceRepos:
+              - 'https://github.com/enrico-laboratory/homelab'
+            destinations:
+              - namespace: "{{ project }}"
+                server: https://kubernetes.default.svc
+
+    - name: deploy application
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: argoproj.io/v1alpha1
+          kind: Application
+          metadata:
+            name: "{{ item }}"
+            namespace: argocd
+          spec:
+            spec:
+              syncPolicy:
+                automated:
+                  prune: true
+            project: "{{ project }}"
+            source:
+              repoURL: "{{ repo }}"
+              targetRevision: HEAD
+              path: "k8s/{{ project }}/{{ item }}"
+            destination:
+              server: https://kubernetes.default.svc
+              namespace: "{{ project }}"
+      loop: "{{ app_list }}"
+

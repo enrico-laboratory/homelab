@@ -1,0 +1,73 @@
+- name: Homer config
+  hosts:
+    - k3s-1
+
+  vars:
+    ns: "mediaserver"
+    bd: "/Users/eruggieri/repos/homelab"
+
+    homer:
+      base_dir: "k8s/mediaserver/homer"
+      pihole:
+        name: "Pi-Hole"
+        address: "192.168.100.52/admin"
+        icon: "pihole.png"
+      jellyfin:
+        name: "Jellyfin"
+        address: "jellyfin.enricoruggieri.com"
+        icon: "jellyfin.png"
+      truenas:
+        name: "TrueNAS"
+        address: "truenas.enricoruggieri.com"
+        icon: "truenas.png"
+      truenas_backup:
+        name: "TrueNAS Backup"
+        address: "truenas-backup.enricoruggieri.com"
+        icon: "truenas-backup.png"
+
+  tasks:
+
+    - name: search for homer pod
+      kubernetes.core.k8s_info:
+        kind: Pod
+        label_selectors:
+          - "app = homer"
+      register: out
+
+    - name: copy homer config to server
+      template:
+        src: "../../../{{ homer.base_dir }}/config.yml"
+        dest: /tmp/config.yml
+    - name: copy homer conf
+      kubernetes.core.k8s_cp:
+        namespace: "{{ ns }}"
+        pod: "{{ out.resources[0].metadata.name }}"
+        remote_path: /www/assets/config.yml
+        local_path: /tmp/config.yml
+    - name: remove temp homer config
+      file:
+        path: /tmp/config.yml
+        state: absent
+
+    - name: make temp icon dir
+      file:
+        path: "/tmp/icons"
+        state: directory
+
+    - name: copy homer icons to server
+      copy:
+        src: "../../../{{ homer.base_dir }}/icons/"
+        dest: "/tmp/icons/"
+
+    - name: copy homer icons to pod
+      kubernetes.core.k8s_cp:
+        namespace: "{{ ns }}"
+        pod: "{{ out.resources[0].metadata.name }}"
+        remote_path: /www/assets/tools/
+        local_path: "/tmp/icons/"
+
+    - name: remove temp homer icon
+      file:
+        path: "/tmp/icons"
+        state: absent
+

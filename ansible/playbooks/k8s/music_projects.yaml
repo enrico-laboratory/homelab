@@ -1,0 +1,86 @@
+- name: music projects with argo
+  hosts: k3s-1
+  vars:
+    state: "present"
+    project: "music-projects"
+    notion_to_calendar:
+      name: "notion-to-calendar"
+      repo: "https://github.com/enrico-laboratory/notion-to-calendar"
+      env: "local"
+    music_projects_local:
+      name: "music-projects-local"
+      repo: "https://github.com/enrico-laboratory/music-projects"
+      env: "local"
+
+    music_projects_prod:
+      name: "music-projects-prod"
+      repo: "https://github.com/enrico-laboratory/music-projects"
+      env: "prod"
+    crt:
+      name: "crt"
+      repo: "https://github.com/enrico-laboratory/cross-relational-theory-app"
+      env: "prod"
+
+  tasks:
+
+    - name: Create namespace
+      kubernetes.core.k8s:
+        name: "{{ project }}-{{ item }}"
+        api_version: v1
+        kind: Namespace
+        state: present
+      loop:
+        - "{{ music_projects_local.env }}"
+        - "{{ music_projects_prod.env }}"
+
+    - name: create Argocd Project
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: argoproj.io/v1alpha1
+          kind: AppProject
+          metadata:
+            name: "{{ project}}-{{ item }}"
+            namespace: argocd
+            finalizers:
+              - resources-finalizer.argocd.argoproj.io
+          spec:
+            description: Project for the Music Projects
+            sourceRepos:
+              - "{{ notion_to_calendar.repo }}"
+              - "{{ music_projects_local.repo }}"
+              - "{{ crt.repo }}"
+            destinations:
+              - namespace: "{{ project}}-{{ item }}"
+                server: https://kubernetes.default.svc
+      loop:
+        - "{{ music_projects_local.env }}"
+        - "{{ music_projects_prod.env }}"
+
+    - name: deploy applications
+      kubernetes.core.k8s:
+        state: "{{ state }}"
+        definition:
+          apiVersion: argoproj.io/v1alpha1
+          kind: Application
+          metadata:
+            name: "{{ item.name }}"
+            namespace: argocd
+          spec:
+            spec:
+              syncPolicy:
+                automated:
+                  prune: true
+            project: "{{ project }}-{{ item.env }}"
+            source:
+              repoURL: "{{ item.repo }}"
+              targetRevision: HEAD
+              path: "k8s/overlay/{{ item.env }}/"
+            destination:
+              server: https://kubernetes.default.svc
+              namespace: "{{ project }}-{{ item.env }}"
+      loop:
+        - "{{ notion_to_calendar }}"
+        - "{{ music_projects_local }}"
+        - "{{ music_projects_prod }}"
+        - "{{ crt }}"

@@ -1,0 +1,171 @@
+- name: Deploy media server
+  hosts: k3s-1
+  vars:
+    helm_repo_name: "prometheus-community"
+    nm: "monitoring"
+    values_filename: "values.yaml"
+    state: "present"
+    prometheus_folder: "../../../k8s/prometheus"
+  tasks:
+    - name: deploy prometheus
+      block:
+        - name: Add stable chart repo
+          kubernetes.core.helm_repository:
+            name: "{{ helm_repo_name }}"
+            repo_url: "https://prometheus-community.github.io/helm-charts"
+            state: "{{ state }}"
+
+        - name: copy values for helm chart
+          copy:
+            src: "{{ prometheus_folder }}/{{ values_filename }}"
+            dest: "/tmp/{{ values_filename }}.yaml"
+          changed_when: false
+
+        - name: Deploy latest version of Prometheus chart inside monitoring namespace (and create it)
+          kubernetes.core.helm:
+            name: prometheus
+            chart_ref: "{{ helm_repo_name }}/kube-prometheus-stack"
+            release_namespace: "{{ nm }}"
+            create_namespace: true
+            values_files:
+              - "/tmp/{{ values_filename }}.yaml"
+            state: "{{ state }}"
+
+        - name: remove value
+          file:
+            path: "/tmp/{{ values_filename }}.yaml"
+            state: absent
+          changed_when: false
+
+        - name: grafana service
+          k8s:
+            state: "{{ state }}"
+            namespace: "{{ nm }}"
+            definition:
+              apiVersion: v1
+              kind: Service
+              metadata:
+                name: prometheus-grafana-lb
+              spec:
+                type: LoadBalancer
+                selector:
+                  app.kubernetes.io/instance: prometheus
+                  app.kubernetes.io/name: grafana
+                ports:
+                  - port: 80
+                    targetPort: 3000
+        - name: grafana ingress
+          k8s:
+            state: "{{ state }}"
+            namespace: "{{ nm }}"
+            definition:
+              apiVersion: networking.k8s.io/v1
+              kind: Ingress
+              metadata:
+                name: grafana-ui
+              spec:
+                rules:
+                  - host: "grafana.enricoruggieri.com"
+                    http:
+                      paths:
+                        - pathType: Prefix
+                          path: "/"
+                          backend:
+                            service:
+                              name: prometheus-grafana-lb
+                              port:
+                                number: 80
+
+        - name: prometheus service
+          k8s:
+            state: "{{ state }}"
+            namespace: "{{ nm }}"
+            definition:
+              apiVersion: v1
+              kind: Service
+              metadata:
+                name: prometheus-prometheus-lb
+              spec:
+                type: LoadBalancer
+                selector:
+                  app.kubernetes.io/name: prometheus
+                  operator.prometheus.io/name: prometheus-kube-prometheus-prometheus
+                ports:
+                  - port: 80
+                    targetPort: 9090
+        - name: prometheus ingress
+          k8s:
+            state: "{{ state }}"
+            namespace: "{{ nm }}"
+            definition:
+              apiVersion: networking.k8s.io/v1
+              kind: Ingress
+              metadata:
+                name: prometheus-ui
+              spec:
+                rules:
+                  - host: "prometheus.enricoruggieri.com"
+                    http:
+                      paths:
+                        - pathType: Prefix
+                          path: "/"
+                          backend:
+                            service:
+                              name: prometheus-prometheus-lb
+                              port:
+                                number: 80
+
+        - name: alertmanager service
+          k8s:
+            state: "{{ state }}"
+            namespace: "{{ nm }}"
+            definition:
+              apiVersion: v1
+              kind: Service
+              metadata:
+                name: prometheus-alertmanager-lb
+              spec:
+                type: LoadBalancer
+                selector:
+                  alertmanager: prometheus-kube-prometheus-alertmanager
+                  app.kubernetes.io/name: alertmanager
+                ports:
+                  - port: 80
+                    targetPort: 9093
+        - name: alertmanager ingress
+          k8s:
+            state: "{{ state }}"
+            namespace: "{{ nm }}"
+            definition:
+              apiVersion: networking.k8s.io/v1
+              kind: Ingress
+              metadata:
+                name: alertmanager-ui
+              spec:
+                rules:
+                  - host: "alertmanager.enricoruggieri.com"
+                    http:
+                      paths:
+                        - pathType: Prefix
+                          path: "/"
+                          backend:
+                            service:
+                              name: prometheus-alertmanager-lb
+                              port:
+                                number: 80
+
+#        Template to add a new dashboard, create role
+#        - name: extra dashboard
+#          k8s:
+#            state: "{{ state }}"
+#            namespace: "{{ nm }}"
+#            definition:
+#              apiVersion: v1
+#              kind: ConfigMap
+#              metadata:
+#                labels:
+#                  grafana_dashboard: "1"
+#                name: new-dashboard-configmap
+#              data:
+#                new-dashboard.json: |
+#                  "{{ lookup('file', 'test.json') | string }}"
