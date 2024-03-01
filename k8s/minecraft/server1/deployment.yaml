@@ -32,7 +32,7 @@ spec:
               value: "true"
             - name: WHITELIST
               value: |
-                _XoniX_
+                _XoniX_?
           ports:
             - containerPort: 25565
               name: main
