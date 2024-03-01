@@ -30,6 +30,9 @@ spec:
             # Use secret in real usage
             - name: EULA
               value: "true"
+            - name: WHITELIST
+              value: |
+                _XoniX_
           ports:
             - containerPort: 25565
               name: main
