@@ -47,8 +47,11 @@ spec:
             initialDelaySeconds: 120
             periodSeconds: 60
           volumeMounts:
-            - name: mc-data
-              mountPath: /data
+            - mountPath: /data
+              name: mc-data
+
       volumes:
         - name: mc-data
-          emptyDir: {}
+          nfs:
+            server: 192.168.100.61
+            path: /mnt/fast-pool1/docker-configs/minecraft_server1
