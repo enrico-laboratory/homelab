@@ -1,6 +1,8 @@
 - name: bootstrap PVE servers
   hosts: pvenodes
   become: yes
+  vars:
+    user: "eruggieri"
 
   tasks:
 
@@ -29,20 +31,20 @@
         cache_valid_time: 3600
         state: latest
 
-    - name: create Ansible user
+    - name: create  user
       user:
-        name: ansible
+        name: "{{ user }}"
         shell: "/bin/bash"
 
-    - name: Ansible ssh key
+    - name: add ssh key
       authorized_key:
-        user: ansible
+        user: "{{ user }}"
         key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 
-    - name: add ansible to sudoers
+    - name: add user to sudoers
       copy:
-        src: sudoer_ansible
-        dest: /etc/sudoers.d/ansible
+        src: pve_cfg_files/sudoer
+        dest: "/etc/sudoers.d/{{ user }}"
         owner: root
         group: root
         mode: 0440
