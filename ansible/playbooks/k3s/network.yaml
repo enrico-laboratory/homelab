@@ -1,0 +1,28 @@
+- name: configure network
+  hosts: k3s
+  become: yes
+
+  tasks:
+
+    - name: remove cloud init network config
+      copy:
+        dest: "/etc/cloud/cloud.cfg.d/99-disable-network-config.cfg"
+        content: "network: {config: disabled}"
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: copy network configuration
+      template:
+        src: "interface_config.yaml.j2"
+        dest: "/etc/netplan/10-network-config.yaml"
+        owner: root
+        group: root
+        mode: 0644
+      register: copy
+
+    - name: netplan apply
+      shell:
+        cmd: netplan apply
+      when: copy.changed
+

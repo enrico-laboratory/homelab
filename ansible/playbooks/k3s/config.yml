@@ -4,13 +4,47 @@
 
   tasks:
 
-  - name: Disable swap for current session
-    command: swapoff -a
-    become: true
+#  - name: Disable swap for current session
+#    command: swapoff -a
+#    become: true
+#
+#  - name: Disable swap permanently, persist reboots
+#    replace:
+#      path: /etc/fstab
+#      regexp: '^(\s*)([^#\n]+\s+)(\w+\s+)swap(\s+.*)$'
+#      replace: '#\1\2\3swap\4'
+#      backup: yes
 
-  - name: Disable swap permanently, persist reboots
-    replace:
-      path: /etc/fstab
-      regexp: '^(\s*)([^#\n]+\s+)(\w+\s+)swap(\s+.*)$'
-      replace: '#\1\2\3swap\4'
-      backup: yes
+  - name: install NFS
+    apt:
+      name:
+        - nfs-common
+      state: latest
+      update_cache: yes
+
+  - name: install prerequisite for ansible kubernetes
+    block:
+
+    - name: install pip
+      apt:
+        name:
+          - python3-pip
+        state: present
+        update_cache: no
+
+    - name: install prerequisite for ansible kubernetes
+      become_user: ansible
+      pip:
+        name:
+          - kubernetes
+          - PyYAML
+          - jsonpatch
+        state: present
+        extra_args: "--user ansible"
+
+    - name: install helm
+      include_role:
+        name: helm
+
+    when: inventory_hostname == "k3s-1"
+
