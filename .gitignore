@@ -43,3 +43,4 @@ terraform.rc
 api_token
 homelab.iml
 credentials.pkr.hcl
+secret*.yaml
