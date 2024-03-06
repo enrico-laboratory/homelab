@@ -16,14 +16,16 @@ spec:
     spec:
       containers:
         - name: librespeed
-          image: lscr.io/linuxserver/librespeed:latest
+          image: ghcr.io/librespeed/speedtest:latest
           env:
-            - name: PUID
-              value: "1000"
-            - name: PGID
-              value: "1000"
-            - name: TZ
-              value: "Europe/Amsterdam"
+            - name: MODE
+              value: "standalone"
+#            - name: PUID
+#              value: "1000"
+#            - name: PGID
+#              value: "1000"
+#            - name: TZ
+#              value: "Europe/Amsterdam"
             - name: PASSWORD
               valueFrom:
                 secretKeyRef:
