@@ -1,0 +1,17 @@
+---
+- name: Check if iommu is enabled in grub
+  shell: grep GRUB_CMDLINE_LINUX_DEFAULT /etc/default/grub | grep -c "amd_iommu=on"
+  register: iommu_status
+  ignore_errors: true
+
+- name: Enable iommu in grub if it is not enabled
+  block:
+  - name: add iommu in grub
+    ansible.builtin.lineinfile:
+      path: "/etc/default/grub"
+      regexp: 'GRUB_CMDLINE_LINUX_DEFAULT="(.*)"'
+      line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet splash amd_iommu=on iommu_pt=on vfio_pci.ids=10de:13c2,10de:0fbb kvm.ignore_msrs=1 initcall_blacklist=sysfb_init"'
+      backrefs: yes
+  - name: update-grub
+    shell: update-grub2
+  when: iommu_status.stdout == "0"
