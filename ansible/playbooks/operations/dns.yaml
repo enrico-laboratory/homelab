@@ -1,0 +1,16 @@
+- name: deploy dns
+  hosts: k3s-1
+  vars:
+
+  tasks:
+
+    - name: deploy dns
+      include_role:
+        name: dns
+      vars:
+        dns_list_name: "custom.list"
+        dns_list_path: "/etc/pihole"
+        cname_list_name: "05-pihole-custom-cname.conf"
+        cname_list_path: "/etc/dnsmasq.d"
+        ns: "tooling"
+        deploy_on_docker: yes
