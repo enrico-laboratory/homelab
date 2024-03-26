@@ -32,6 +32,9 @@ spec:
           volumeMounts:
             - mountPath: /etc/dnsmasq.d
               name: dnsmasq
+            - mountPath: /etc/dnsmasq.d/05-pihole-custom-cname.conf
+              name: dns-records
+              subPath: 05-pihole-custom-cname.conf
             - mountPath: /etc/pihole
               name: config
             - mountPath: /etc/pihole/custom.list
@@ -43,6 +46,8 @@ spec:
             items:
               - key: custom.list
                 path: custom.list
+              - key: 05-pihole-custom-cname.conf
+                path: 05-pihole-custom-cname.conf
             name: pihole-dns-configs
         - name: config
           nfs:
