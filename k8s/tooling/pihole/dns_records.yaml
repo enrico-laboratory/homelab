@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-dns-configs
+data:
+  custom.list: |
+    192.168.100.10 proxmox.enricoruggieri.com
+    192.168.100.61 truenas.enricoruggieri.com
+    192.168.100.60 truenas-backup.enricoruggieri.com
+    192.168.100.40 win-gaming.enricoruggieri.com
+    192.168.100.52 pihole.enricoruggieri.com
+    192.168.100.54 linux-desktop.enricoruggieri.com
+    192.168.100.111 k3s-1.enricoruggieri.com
+    192.168.100.250 argocd.enricoruggieri.com
+#  user-interface.properties: |
+#    color.good=purple
+#    color.bad=yellow
+#    allow.textmode=true

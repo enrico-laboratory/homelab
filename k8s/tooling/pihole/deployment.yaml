@@ -34,7 +34,16 @@ spec:
               name: dnsmasq
             - mountPath: /etc/pihole
               name: config
+            - mountPath: /etc/pihole/custom.list
+              name: dns-records
+              subPath: custom.list
       volumes:
+        - name: dns-records
+          configMap:
+            items:
+              - key: custom.list
+                path: custom.list
+            name: pihole-dns-configs
         - name: config
           nfs:
             server: 192.168.100.61
