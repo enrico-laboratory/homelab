@@ -15,6 +15,7 @@ spec:
       labels:
         app: jellyfin
     spec:
+      nodeName: k3s-3
       containers:
         - name: jellyfin
           image: ghcr.io/linuxserver/jellyfin
