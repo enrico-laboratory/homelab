@@ -21,7 +21,7 @@ spec:
           image: ghcr.io/linuxserver/jellyfin
           resources:
             limits:
-              cpu: "3"
+              cpu: "3.5"
             requests:
               cpu: "2.5"
           env:
