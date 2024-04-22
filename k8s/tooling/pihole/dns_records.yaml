@@ -27,3 +27,4 @@ data:
     cname=prometheus.enricoruggieri.com,k3s-1.enricoruggieri.com
     cname=alertmanager.enricoruggieri.com,k3s-1.enricoruggieri.com
     cname=librespeed.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=audiobookshelf.enricoruggieri.com,k3s-1.enricoruggieri.com
