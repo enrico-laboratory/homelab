@@ -4,7 +4,7 @@ metadata:
   name: "music-projects-prod"
   namespace: argocd
 spec:
-  project: "music-projects-prod"
+  project: "music-projects"
   source:
     repoURL: "https://github.com/enrico-laboratory/music-projects"
     targetRevision: HEAD
