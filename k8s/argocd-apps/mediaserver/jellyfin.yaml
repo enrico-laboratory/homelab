@@ -4,10 +4,6 @@ metadata:
   name: "jellyfin"
   namespace: argocd
 spec:
-  spec:
-    syncPolicy:
-      automated:
-        prune: true
   project: "mediaserver"
   source:
     repoURL: "https://github.com/enrico-laboratory/homelab"
