@@ -1,0 +1,33 @@
+- name: install ArgoCD
+  hosts: k3s-1
+  vars:
+    argocd_repo: "https://argoproj.github.io/argo-helm"
+    chart_ref: "argocd/argo-cd"
+    chart_version: "3.2.2"
+    state: "present"
+  tasks:
+
+    - name: Add argocd chart repo
+      kubernetes.core.helm_repository:
+        name: argocd
+        repo_url: "{{ argocd_repo }}"
+        state: "{{ state }}"
+
+    - name: Deploy argocd
+      kubernetes.core.helm:
+        state: "present"
+        name: argocd
+        chart_ref: "{{ chart_ref }}"
+        chart_version: "{{ chart_version }}"
+        release_namespace: argocd
+        create_namespace: true
+        values: "{{ lookup('file', '/home/eruggieri/repos/homelab/k8s/argocd/values_overwrite.yaml') | from_yaml }}"
+      when: state == "present"
+
+    - name: Delete argocd
+      kubernetes.core.helm:
+        name: argocd
+        release_namespace: argocd
+        state: absent
+        wait: true
+      when: state == "absent"

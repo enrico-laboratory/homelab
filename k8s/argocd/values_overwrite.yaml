@@ -6,6 +6,10 @@ server:
   ## ArgoCD config
   ## reference https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/argocd-cm.yaml
   configEnabled: true
+  service:
+    type: LoadBalancer
+    annotations:
+      metallb.universe.tf/loadBalancerIPs: 192.168.100.201
   config:
     repositories: |
       - type: git
@@ -14,28 +18,28 @@ server:
         type: helm
         url: https://argoproj.github.io/argo-helm
   additionalApplications:
-    - name: argocd
-      namespace: argocd
-      destination:
-        namespace: argocd
-        server: https://kubernetes.default.svc
-      project: argocd
-
-      sources:
-        - repoURL: 'https://argoproj.github.io/argo-helm'
-          chart: argocd
-          targetRevision: 3.2.2
-          helm:
-            valueFiles:
-              - $values/charts/argocd/values.yaml
-        - repoURL: 'https://github.com/enrico-laboratory/homelab.git'
-          helm:
-            valueFiles:
-              - k8s/argocd/values_overwrite.yaml
-
-      syncPolicy:
-        syncOptions:
-          - CreateNamespace=true
+#    - name: argocd
+#      namespace: argocd
+#      destination:
+#        namespace: argocd
+#        server: https://kubernetes.default.svc
+#      project: argocd
+#
+#      sources:
+#        - repoURL: 'https://argoproj.github.io/argo-helm'
+#          chart: argocd
+#          targetRevision: 3.2.2
+#          helm:
+#            valueFiles:
+#              - $values/charts/argocd/values.yaml
+#        - repoURL: 'https://github.com/enrico-laboratory/homelab.git'
+#          helm:
+#            valueFiles:
+#              - k8s/argocd/values_overwrite.yaml
+#
+#      syncPolicy:
+#        syncOptions:
+#          - CreateNamespace=true
     - name: argocd-apps
       namespace: argocd
       destination:
@@ -43,8 +47,8 @@ server:
         server: https://kubernetes.default.svc
       project: argocd
       source:
-        path: argocd-apps
-        repoURL: https://github.com/kurtburak/argocd.git
+        path: k8s/argocd-apps
+        repoURL: https://github.com/enrico-laboratory/homelab.git
         targetRevision: HEAD
         directory:
           recurse: true
@@ -60,8 +64,8 @@ server:
         server: https://kubernetes.default.svc
       project: argocd
       source:
-        path: argocd-appprojects
-        repoURL: https://github.com/kurtburak/argocd.git
+        path: k8s/argocd-projects
+        repoURL: https://github.com/enrico-laboratory/homelab.git
         targetRevision: HEAD
         directory:
           recurse: true
