@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: "music-projects"
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Project for the Music Projects
+  sourceRepos:
+    - "https://github.com/enrico-laboratory/notion-to-calendar"
+    - "https://github.com/enrico-laboratory/music-projects"
+    - "https://github.com/enrico-laboratory/cross-relational-theory-app"
+  destinations:
+    - namespace: "music-projects"
+      server: https://kubernetes.default.svc
