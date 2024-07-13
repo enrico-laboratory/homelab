@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: "tooling"
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Project for tooling
+  sourceRepos:
+    - 'https://github.com/enrico-laboratory/homelab'
+  destinations:
+    - namespace: "tooling"
+      server: https://kubernetes.default.svc
