@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: "music-projects-local"
+  name: "music-projects-prod"
   namespace: argocd
 spec:
   spec:
@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: "https://github.com/enrico-laboratory/music-projects"
     targetRevision: HEAD
-    path: "k8s/overlay/local/"
+    path: "k8s/overlay/prod/"
   destination:
     server: https://kubernetes.default.svc
     namespace: "music-projects"
