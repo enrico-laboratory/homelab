@@ -4,10 +4,6 @@ metadata:
   name: "music-projects-local"
   namespace: argocd
 spec:
-  spec:
-    syncPolicy:
-      automated:
-        prune: true
   project: "music-projects-local"
   source:
     repoURL: "https://github.com/enrico-laboratory/music-projects"
