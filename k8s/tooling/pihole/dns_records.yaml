@@ -11,7 +11,6 @@ data:
     192.168.100.52 pihole.enricoruggieri.com
     192.168.100.54 linux-desktop.enricoruggieri.com
     192.168.100.111 k3s-1.enricoruggieri.com
-    192.168.100.250 argocd.enricoruggieri.com
   05-pihole-custom-cname.conf: |
     cname=jellyfin.enricoruggieri.com,k3s-1.enricoruggieri.com
     cname=sonarr.enricoruggieri.com,k3s-1.enricoruggieri.com
@@ -28,3 +27,4 @@ data:
     cname=alertmanager.enricoruggieri.com,k3s-1.enricoruggieri.com
     cname=librespeed.enricoruggieri.com,k3s-1.enricoruggieri.com
     cname=audiobookshelf.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=argocd.enricoruggieri.com,k3s-1.enricoruggieri.com
