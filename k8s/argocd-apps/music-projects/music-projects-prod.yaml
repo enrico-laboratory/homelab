@@ -8,14 +8,14 @@ spec:
     syncPolicy:
       automated:
         prune: true
-  project: "music-projects"
+  project: "music-projects-prod"
   source:
     repoURL: "https://github.com/enrico-laboratory/music-projects"
     targetRevision: HEAD
     path: "k8s/overlay/prod/"
   destination:
     server: https://kubernetes.default.svc
-    namespace: "music-projects"
+    namespace: "music-projects-prod"
   syncPolicy:
     automated:
       selfHeal: true

@@ -12,5 +12,7 @@ spec:
     - "https://github.com/enrico-laboratory/music-projects"
     - "https://github.com/enrico-laboratory/cross-relational-theory-app"
   destinations:
-    - namespace: "music-projects"
+    - namespace: "music-projects-local"
+      server: https://kubernetes.default.svc
+    - namespace: "music-projects-prod"
       server: https://kubernetes.default.svc
