@@ -1,50 +1,24 @@
 - name: install ArgoCD
   hosts: k3s-1
   vars:
-    state: "present"
+    sealed_secrets_state: "present"
+    argocd_state: "present"
+    argocd_ip_address: 192.168.100.201
   tasks:
 
-    - name: Download ArgoCD amnifest
-      ansible.builtin.get_url:
-        url: "https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml"
-        dest: "~/argocd_install.yaml"
-        mode: '0664'
+    - name: Install sealed secret
+      include_role:
+        name: sealed_secrets
+      vars:
+        sealed_secrets_version: "v0.25.0"
+        state: "{{ sealed_secrets_state }}"
 
-    - name: Create namespace
-      kubernetes.core.k8s:
-        name: "argocd"
-        api_version: v1
-        kind: Namespace
-        state: present
-
-    - name: Deploy argocd manifest
-      kubernetes.core.k8s:
-        state: "{{ state }}"
-        namespace: "argocd"
-        src: "~/argocd_install.yaml"
-
-    - name: remove argocd namespace
-      kubernetes.core.k8s:
-        name: "argocd"
-        api_version: v1
-        kind: Namespace
-        state: absent
-      when: state == "absent"
-
-    - name: install sealed secrets
-      block:
-
-        - name: download sealed secret definition
-          get_url:
-            url: "https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.25.0/controller.yaml"
-            dest: "~/sealed_secret_controller.yaml"
-            mode: '0664'
-
-        - name: Deploy sealed secret manifest
-          kubernetes.core.k8s:
-            state: "{{ state }}"
-            namespace: "argocd"
-            src: "~/sealed_secret_controller.yaml"
+    - name: Install argoCD
+      include_role:
+        name: argocd
+      vars:
+        state: "{{ argocd_state }}"
+        ip_address: "{{ argocd_ip_address }}"
 
     - name: deploy repo secrets
       kubernetes.core.k8s:

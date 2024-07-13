@@ -1,0 +1,40 @@
+- name: Download ArgoCD manifest
+  ansible.builtin.get_url:
+    url: "https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml"
+    dest: "~/argocd_install.yaml"
+    mode: '0664'
+  changed_when: false
+
+- name: Create argocd namespace
+  kubernetes.core.k8s:
+    name: "argocd"
+    api_version: v1
+    kind: Namespace
+    state: present
+  when: state == "present"
+
+- name: Deploy argocd manifest
+  kubernetes.core.k8s:
+    state: "{{ state }}"
+    namespace: "argocd"
+    src: "~/argocd_install.yaml"
+
+- name: Delete argocd definition
+  file:
+    path: "~/argocd_install.yaml"
+    state: absent
+  changed_when: false
+
+- name: Deploy argocd load balancer service
+  kubernetes.core.k8s:
+    state: "{{ state }}"
+    namespace: "argocd"
+    definition: "{{ lookup('template', 'argocd-server-lb.yaml') | from_yaml }}"
+
+- name: Delete argocd namespace
+  kubernetes.core.k8s:
+    name: "argocd"
+    api_version: v1
+    kind: Namespace
+    state: absent
+  when: state == "absent"
