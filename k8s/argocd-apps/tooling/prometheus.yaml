@@ -6,9 +6,12 @@ metadata:
 spec:
   project: "tooling"
   source:
-    repoURL: "https://prometheus-community.github.io/helm-charts"
-    chart: kube-prometheus-stack
-    targetRevision: "60.0"
+    path: k8s/tooling/prometheus/kube-prometheus-stack
+    repoURL: 'https://github.com/enrico-laboratory/homelab'
+#    targetRevision: test
+    helm:
+      valueFiles:
+        - k8s/tooling/prometheus/values.yaml`
   destination:
     server: https://kubernetes.default.svc
     namespace: "tooling"

@@ -3587,6 +3587,9 @@ prometheus:
       - job_name: linux-desktop
         static_configs:
           - targets: [ 'linux-desktop.enricoruggieri.com:9100' ]
+      - job_name: node-exporter
+        static_configs:
+          - targets: [ '192.168.100.21:9100' ]
     # - job_name: kube-etcd
     #   kubernetes_sd_configs:
     #     - role: node
