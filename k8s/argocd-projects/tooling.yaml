@@ -8,8 +8,7 @@ metadata:
 spec:
   description: Project for tooling
   sourceRepos:
-    - 'https://github.com/enrico-laboratory/homelab'
-    - "https://prometheus-community.github.io/helm-charts"
+    - "*"
   destinations:
     - namespace: "tooling"
       server: https://kubernetes.default.svc
