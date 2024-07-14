@@ -5,13 +5,9 @@ metadata:
   namespace: argocd
 spec:
   project: "tooling"
-  sources:
+  source:
     - repoURL: "https://prometheus-community.github.io/helm-charts"
       chart: kube-prometheus-stack
-    - repoURL: 'https://github.com/enrico-laboratory/homelab.git'
-      helm:
-        valueFiles:
-          - k8s/tooling/prometheus/values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: "tooling"
