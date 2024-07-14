@@ -2,10 +2,19 @@
 ## Ref: https://github.com/argoproj/argo-cd
 ##
 ## Server
+global:
+  image:
+    tag: latest
 server:
   ## ArgoCD config
   ## reference https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/argocd-cm.yaml
   configEnabled: true
+  ingress:
+    enabled: true
+    hosts:
+      - "argocd.enricoruggieri.com"
+    paths:
+      - /
   service:
     type: LoadBalancer
     annotations:
