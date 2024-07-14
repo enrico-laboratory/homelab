@@ -8,7 +8,7 @@ metadata:
 spec:
   description: Project for tooling
   sourceRepos:
-    - '*'
+    - 'https://github.com/enrico-laboratory/homelab'
   destinations:
-    - namespace: '*'
+    - namespace: "tooling"
       server: https://kubernetes.default.svc
