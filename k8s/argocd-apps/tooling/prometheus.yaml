@@ -11,7 +11,7 @@ spec:
 #    targetRevision: test
     helm:
       valueFiles:
-        - k8s/tooling/prometheus/values.yaml`
+        - ../values.yaml`
   destination:
     server: https://kubernetes.default.svc
     namespace: "tooling"
