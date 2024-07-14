@@ -8,7 +8,7 @@ metadata:
 spec:
   description: Project for tooling
   sourceRepos:
-    - "*"
+    - '*'
   destinations:
     - namespace: "tooling"
       server: https://kubernetes.default.svc
