@@ -6,8 +6,8 @@ metadata:
 spec:
   project: "tooling"
   source:
-    - repoURL: "https://prometheus-community.github.io/helm-charts"
-      chart: kube-prometheus-stack
+    repoURL: "https://prometheus-community.github.io/helm-charts"
+    chart: kube-prometheus-stack
   destination:
     server: https://kubernetes.default.svc
     namespace: "tooling"
