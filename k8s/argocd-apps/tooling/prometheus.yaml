@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "prometheus"
+  namespace: tooling
+spec:
+  project: "tooling"
+  sources:
+    - repoURL: "https://prometheus-community.github.io/helm-charts"
+      chart: kube-prometheus-stack
+    - repoURL: 'https://github.com/enrico-laboratory/homelab.git'
+      helm:
+        valueFiles:
+          - k8s/tooling/prometheus/values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: "tooling"
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
+
+
