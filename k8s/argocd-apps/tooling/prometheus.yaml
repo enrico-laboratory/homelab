@@ -8,10 +8,9 @@ spec:
   source:
     path: k8s/tooling/prometheus/kube-prometheus-stack
     repoURL: 'https://github.com/enrico-laboratory/homelab'
-#    targetRevision: test
-    helm:
-      valueFiles:
-        - ../values.yaml
+#    helm:
+#      valueFiles:
+#        - ../values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: "tooling"
