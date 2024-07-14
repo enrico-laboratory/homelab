@@ -4,6 +4,7 @@ metadata:
   labels:
     grafana_dashboard: "1"
   name: grafana-dashboard-node-exporter
+  namespace: tooling
 data:
   linux-node-exporter-full.json: |
     {
