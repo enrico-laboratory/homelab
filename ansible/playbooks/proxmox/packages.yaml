@@ -1,0 +1,10 @@
+- name: Install extra packages
+  hosts: pvenodes
+  become: yes
+
+  tasks:
+    - name: install packages
+      apt:
+        name: xsensors
+        state: latest
+        update_cache: true
