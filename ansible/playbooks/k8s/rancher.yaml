@@ -1,0 +1,90 @@
+- name: Deploy rancher
+  hosts: k3s-1
+  vars:
+    helm_repo_name: "rancher-stable"
+    helm_repo_url: "https://releases.rancher.com/server-charts/stable"
+    nm: "cattle-system"
+    cert_manager_helm_repo_name: "jetstack"
+    cert_manager_helm_repo_url: "https://charts.jetstack.io"
+    cert_manager_namespace: "cert-manager"
+    state: "present"
+  tasks:
+
+    - name: Add rancher stable chart repo
+      kubernetes.core.helm_repository:
+        name: "{{ helm_repo_name }}"
+        repo_url: "{{ helm_repo_url }}"
+        state: "{{ state }}"
+
+    - name: install cert manager
+      block:
+      - name: Add cert-manager stable chart repo
+        kubernetes.core.helm_repository:
+          name: "{{ cert_manager_helm_repo_name }}"
+          repo_url: "{{ cert_manager_helm_repo_url }}"
+          state: "{{ state }}"
+#      - name: Deploy cert-manager
+#        kubernetes.core.helm:
+#          name: cert-manager
+#          chart_ref: "{{ cert_manager_helm_repo_name }}/cert-manager"
+#          release_namespace: "{{ cert_manager_namespace }}"
+#          create_namespace: true
+#          update_repo_cache: true
+#          set_values:
+#          - value: "installCRDs=true"
+#            value_type: string
+#          state: "{{ state }}"
+#
+#    - name: install rancher
+#      kubernetes.core.helm:
+#        name: rancher
+#        chart_ref: "{{ helm_repo_name }}/rancher"
+#        release_namespace: "{{ nm }}"
+#        create_namespace: true
+#        set_values:
+#          - value: "hostname=k3s-1.enricoruggieri.com"
+#            value_type: string
+#          - value: "bootstrapPassword=admin"
+#            value_type: string
+#        state: "{{ state }}"
+
+    - name: rancher lb service
+      k8s:
+        state: "{{ state }}"
+        namespace: "{{ nm }}"
+        definition:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: rancher-lb
+            namespace: "{{ nm }}"
+            annotations:
+              metallb.universe.tf/loadBalancerIPs: 192.168.100.240
+          spec:
+            type: LoadBalancer
+            selector:
+              app: rancher
+            ports:
+              - port: 443
+
+#    - name: rancher ingress
+#      k8s:
+#        state: "{{ state }}"
+#        namespace: "{{ nm }}"
+#        definition:
+#          apiVersion: networking.k8s.io/v1
+#          kind: Ingress
+#          metadata:
+#            name: rancher
+#          spec:
+#            rules:
+#              - host: "rancher.enricoruggieri.com"
+#                http:
+#                  paths:
+#                    - pathType: Prefix
+#                      path: "/"
+#                      backend:
+#                        service:
+#                          name: prometheus-alertmanager-lb
+#                          port:
+#                            number: 80
