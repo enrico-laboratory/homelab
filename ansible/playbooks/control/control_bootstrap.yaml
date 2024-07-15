@@ -7,9 +7,19 @@
     - name: install packages
       apt:
         name:
-          - ansible
+          - python3-pip
         update_cache: yes
         state: latest
+
+    - name: install ansible
+      pip:
+        name: ansible
+        extra_args: "--user ansible --break-system-packages"
+
+    - name: Add another bin dir to system-wide $PATH.
+      copy:
+        dest: /etc/profile.d/ansible-path.sh
+        content: 'PATH=$PATH:/home/ansible/.local/bin'
 
     - name: create user
       user:

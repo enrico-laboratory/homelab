@@ -1,5 +1,5 @@
 - name: control main
-  hosts: localhost
+  hosts: control
   become: yes
 
   tasks:
@@ -9,8 +9,18 @@
         type: ethernet
         conn_name: ethernet
         ifname: eth0
-        ip4: 192.168.100.12/24
+        ip4: 192.168.100.52/24
+        gw4: 192.168.100.1
         state: present
+
+
+    - name: deactivate wifi connection
+      nmcli:
+        type: wifi
+        conn_name: "wlan0"
+        autoconnect: false
+        state: present
+        ssid: "DaiKatso2"
 
     - name: remove default connection
       nmcli:
@@ -35,6 +45,7 @@
           - terraform
           - sshpass
           - vim
+          - python3-pip
         update_cache: yes
         state: latest
 

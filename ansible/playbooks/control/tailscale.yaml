@@ -1,0 +1,26 @@
+- name: install tailscale
+  hosts: control
+  become: yes
+
+  tasks:
+
+    - name: add port forwarding
+      ansible.posix.sysctl:
+        name: net.ipv4.ip_forward
+        value: '1'
+        sysctl_set: true
+        state: present
+        reload: true
+
+    - name: add port forwarding ipv6
+      ansible.posix.sysctl:
+        name: net.ipv6.conf.all.forwarding
+        value: '1'
+        sysctl_set: true
+        state: present
+        reload: true
+
+    - name: tailscale enable subnet routes
+      shell:
+        cmd: |
+          tailscale up --advertise-routes=192.168.100.0/24 --advertise-exit-node
