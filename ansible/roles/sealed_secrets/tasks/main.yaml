@@ -1,0 +1,18 @@
+- name: download sealed secret definition
+  get_url:
+    url: "https://github.com/bitnami-labs/sealed-secrets/releases/download/{{ sealed_secrets_version }}/controller.yaml"
+    dest: "~/sealed_secret_controller.yaml"
+    mode: '0664'
+  changed_when: false
+
+- name: Deploy sealed secret manifest
+  kubernetes.core.k8s:
+    state: "{{ state }}"
+    namespace: "argocd"
+    src: "~/sealed_secret_controller.yaml"
+
+- name: Delete sealed secret definition
+  file:
+    path: "~/sealed_secret_controller.yaml"
+    state: absent
+  changed_when: false
