@@ -33,14 +33,14 @@
         update_cache: no
 
     - name: install prerequisite for ansible kubernetes
-      become_user: ansible
+      become_user: eruggieri
       pip:
         name:
           - kubernetes
           - PyYAML
           - jsonpatch
         state: present
-        extra_args: "--user ansible"
+
 
     - name: install helm
       include_role:
