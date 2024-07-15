@@ -55,5 +55,8 @@
             destination:
               server: https://kubernetes.default.svc
               namespace: "{{ project }}"
+            syncPolicy:
+              automated:
+                selfHeal: true
       loop: "{{ app_list }}"
 
