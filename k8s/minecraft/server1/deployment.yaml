@@ -8,20 +8,24 @@ spec:
     - port: 25565
       nodePort: 30000
   selector:
-    app: mc-vanilla
+    app: mc-forge
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: mc-vanilla
+  labels:
+    app: mc-forge
+  name: mc-forge
 spec:
+  replicas: 1
+  serviceName: mc-forge
   selector:
     matchLabels:
-      app: mc-vanilla
+      app: mc-forge
   template:
     metadata:
       labels:
-        app: mc-vanilla
+        app: mc-forge
     spec:
       containers:
         - image: itzg/minecraft-server
@@ -30,9 +34,13 @@ spec:
             # Use secret in real usage
             - name: EULA
               value: "true"
+            - name: TYPE
+              value: "FORGE"
+            - name: VERSION
+              value: "1.20.4"
             - name: WHITELIST
               value: |
-                _XoniX_?
+                _XoniX_
           ports:
             - containerPort: 25565
               name: main
@@ -52,7 +60,6 @@ spec:
           volumeMounts:
             - mountPath: /data
               name: mc-data
-
       volumes:
         - name: mc-data
           nfs:
