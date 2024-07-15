@@ -1,0 +1,22 @@
+- name: firewall configuration
+  become: yes
+  hosts: router
+
+  tasks:
+
+    - name: get key
+      get_url:
+        url: "https://pkg.cloudflareclient.com/pubkey.gpg"
+        dest: "/usr/share/keyrings/cloudflare-warp-archive-keyring.asc"
+
+    - name: install repo
+      apt_repository:
+        repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.asc] https://pkg.cloudflareclient.com/ {{ ansible_distribution_release }} main"
+        state: present
+
+    - name: install bin
+      apt:
+        update_cache: yes
+        state: latest
+        name:
+          - cloudflare-warp
