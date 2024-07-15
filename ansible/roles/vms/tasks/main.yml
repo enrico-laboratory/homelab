@@ -10,8 +10,6 @@
         name: "{{ name }}"
       register: status
 
-
-
     - name: stop vm if running
       proxmox_kvm:
         api_user: "{{ api_user }}"
@@ -51,6 +49,19 @@
 
 - name: deploy vm
   block:
+  - name: check vm status
+    community.general.proxmox_vm_info:
+      api_user: "{{ api_user }}"
+      api_token_secret: "{{ lookup('file', api_token_dir + '/api_token') }}"
+      api_token_id: "{{ api_token_id_k3s }}"
+      api_host: "{{ ansible_host }}"
+      node: "{{ inventory_hostname }}"
+
+    register: status
+
+  - debug:
+      msg: "{{ status }}"
+
   - name: create vm
     proxmox_kvm:
       api_user: "{{ api_user }}"
