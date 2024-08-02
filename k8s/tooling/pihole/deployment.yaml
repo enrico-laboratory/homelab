@@ -40,6 +40,11 @@ spec:
             - mountPath: /etc/pihole/custom.list
               name: dns-records
               subPath: custom.list
+      tolerations:
+        - key: "arm"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
       volumes:
         - name: dns-records
           configMap:

@@ -10,7 +10,13 @@ data:
     192.168.100.40 win-gaming.enricoruggieri.com
     192.168.100.52 pihole.enricoruggieri.com
     192.168.100.54 linux-desktop.enricoruggieri.com
+    192.168.100.71 win-desktop.enricoruggieri.com
     192.168.100.111 k3s-1.enricoruggieri.com
+    192.168.100.112 k3s-2.enricoruggieri.com
+    192.168.100.113 k3s-3.enricoruggieri.com
+    192.168.100.114 k3s-4.enricoruggieri.com
+    192.168.100.115 k3s-5.enricoruggieri.com
+    192.168.100.116 k3s-6.enricoruggieri.com
   05-pihole-custom-cname.conf: |
     cname=jellyfin.enricoruggieri.com,k3s-1.enricoruggieri.com
     cname=sonarr.enricoruggieri.com,k3s-1.enricoruggieri.com
