@@ -1,17 +1,17 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: "tailscale"
-  namespace: argocd
-spec:
-  project: "tooling"
-  source:
-    repoURL: "https://github.com/enrico-laboratory/homelab"
-    targetRevision: HEAD
-    path: "k8s/tooling/tailscale"
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: "tooling"
-  syncPolicy:
-    automated:
-      selfHeal: true
+#apiVersion: argoproj.io/v1alpha1
+#kind: Application
+#metadata:
+#  name: "tailscale"
+#  namespace: argocd
+#spec:
+#  project: "tooling"
+#  source:
+#    repoURL: "https://github.com/enrico-laboratory/homelab"
+#    targetRevision: HEAD
+#    path: "k8s/tooling/tailscale"
+#  destination:
+#    server: https://kubernetes.default.svc
+#    namespace: "tooling"
+#  syncPolicy:
+#    automated:
+#      selfHeal: true
