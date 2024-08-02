@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tailscale
+  labels:
+    app: tailscale
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tailscale
+  template:
+    metadata:
+      labels:
+        app: tailscale
+    spec:
+      containers:
+        - name: tailscale
+          image: ghcr.io/tailscale/tailscale:latest
+          env:
+            - name: TS_ACCEPT_DNS
+              value: "true"
+            - name: TS_ROUTES
+              value: "192.168.100.0/24"
+#            - name: PGID
+#              value: "1000"
+#            - name: TZ
+#              value: "Europe/Amsterdam"
