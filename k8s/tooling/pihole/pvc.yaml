@@ -8,7 +8,7 @@ spec:
   resources:
     requests:
       storage: 150Mi
-  storageClassName: local-storage
+  storageClassName: local-storage-pihole-config
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -20,4 +20,4 @@ spec:
   resources:
     requests:
       storage: 1Mi
-  storageClassName: local-storage
+  storageClassName: local-storage-pihole-dnsmasq

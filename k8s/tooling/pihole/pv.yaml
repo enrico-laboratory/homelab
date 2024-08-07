@@ -1,17 +1,40 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: local-volume-k3s-5
+  name: local-volume-k3s-5-pihole-config
 spec:
   capacity:
-    storage: 1Gi
+    storage: 150Mi
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: local-storage
+  storageClassName: local-storage-pihole-config
   local:
-    path: /mnt/ssd1
+    path: /mnt/pihole/config
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - k3s-5
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-volume-k3s-5-pihole-dnsmasq
+spec:
+  capacity:
+    storage: 1Mi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage-pihole-dnsmasq
+  local:
+    path: /mnt/pihole/dnsmasq
   nodeAffinity:
     required:
       nodeSelectorTerms:
