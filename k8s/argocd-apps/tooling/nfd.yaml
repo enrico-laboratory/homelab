@@ -11,6 +11,12 @@ spec:
     targetRevision: 0.15.1
     helm:
       releaseName: node-feature-discovery
+      valuesObject:
+        worker:
+          tolerations:
+            - effect: NoSchedule
+              key: arm
+              value: "true"
   destination:
     server: "https://kubernetes.default.svc"
     namespace: tooling
