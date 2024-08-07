@@ -6,11 +6,11 @@ metadata:
 spec:
   project: tooling
   source:
-    chart: nfd/node-feature-discovery
+    chart: node-feature-discovery
     repoURL: https://kubernetes-sigs.github.io/node-feature-discovery/charts
     targetRevision: 0.15.1
     helm:
-      releaseName: nfd/node-feature-discovery
+      releaseName: node-feature-discovery
   destination:
     server: "https://kubernetes.default.svc"
     namespace: tooling
