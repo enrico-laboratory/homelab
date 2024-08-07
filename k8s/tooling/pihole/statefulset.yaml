@@ -31,12 +31,12 @@ spec:
                   key: pass
           volumeMounts:
             - mountPath: /etc/dnsmasq.d
-              name: dnsmasq-vol
+              name: dnsmasq
             - mountPath: /etc/dnsmasq.d/05-pihole-custom-cname.conf
               name: dns-records
               subPath: 05-pihole-custom-cname.conf
             - mountPath: /etc/pihole
-              name: config-vol
+              name: config
             - mountPath: /etc/pihole/custom.list
               name: dns-records
               subPath: custom.list
@@ -45,23 +45,6 @@ spec:
           operator: "Equal"
           value: "true"
           effect: "NoSchedule"
-      volumeClaimTemplates:
-        - metadata:
-            name: config-vol
-            spec:
-              accessModes: [ "ReadWriteOnce" ]
-              storageClassName: "pihole-config"
-              resources:
-                requests:
-                  storage: 150Mi
-        - metadata:
-            name: dnsmasq-vol
-            spec:
-              accessModes: [ "ReadWriteOnce" ]
-              storageClassName: "pihole-dnsmasq"
-              resources:
-                requests:
-                  storage: 1Mi
       volumes:
         - name: dns-records
           configMap:
@@ -71,11 +54,15 @@ spec:
               - key: 05-pihole-custom-cname.conf
                 path: 05-pihole-custom-cname.conf
             name: pihole-dns-configs
-#        - name: config
+        - name: config
+          persistentVolumeClaim:
+            claimName: pihole-config-pvc
 #          nfs:
 #            server: 192.168.100.61
 #            path: /mnt/fast-pool1/docker-configs/pihole/config
-#        - name: dnsmasq
+        - name: dnsmasq
+          persistentVolumeClaim:
+            claimName: pihole-dnsmasq-pvc
 #          nfs:
 #            server: 192.168.100.61
 #            path: /mnt/fast-pool1/docker-configs/pihole/dnsmasq.d
