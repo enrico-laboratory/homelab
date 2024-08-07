@@ -4,7 +4,7 @@ metadata:
   name: cert-manager
   namespace: argocd
 spec:
-  project: default
+  project: tooling
   source:
     chart: cert-manager
     repoURL: https://charts.jetstack.io
@@ -13,4 +13,4 @@ spec:
       releaseName: cert-manager
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: kubeseal
+    namespace: tooling
