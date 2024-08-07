@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: pihole
   labels:
@@ -31,12 +31,12 @@ spec:
                   key: pass
           volumeMounts:
             - mountPath: /etc/dnsmasq.d
-              name: dnsmasq
+              name: dnsmasq-vol
             - mountPath: /etc/dnsmasq.d/05-pihole-custom-cname.conf
               name: dns-records
               subPath: 05-pihole-custom-cname.conf
             - mountPath: /etc/pihole
-              name: config
+              name: config-vol
             - mountPath: /etc/pihole/custom.list
               name: dns-records
               subPath: custom.list
@@ -45,6 +45,23 @@ spec:
           operator: "Equal"
           value: "true"
           effect: "NoSchedule"
+      volumeClaimTemplates:
+        - metadata:
+            name: config-vol
+            spec:
+              accessModes: [ "ReadWriteOnce" ]
+              storageClassName: "pihole-config"
+              resources:
+                requests:
+                  storage: 150Mi
+        - metadata:
+            name: dnsmasq-vol
+            spec:
+              accessModes: [ "ReadWriteOnce" ]
+              storageClassName: "pihole-dnsmasq"
+              resources:
+                requests:
+                  storage: 1Mi
       volumes:
         - name: dns-records
           configMap:
@@ -54,11 +71,11 @@ spec:
               - key: 05-pihole-custom-cname.conf
                 path: 05-pihole-custom-cname.conf
             name: pihole-dns-configs
-        - name: config
-          nfs:
-            server: 192.168.100.61
-            path: /mnt/fast-pool1/docker-configs/pihole/config
-        - name: dnsmasq
-          nfs:
-            server: 192.168.100.61
-            path: /mnt/fast-pool1/docker-configs/pihole/dnsmasq.d
+#        - name: config
+#          nfs:
+#            server: 192.168.100.61
+#            path: /mnt/fast-pool1/docker-configs/pihole/config
+#        - name: dnsmasq
+#          nfs:
+#            server: 192.168.100.61
+#            path: /mnt/fast-pool1/docker-configs/pihole/dnsmasq.d
