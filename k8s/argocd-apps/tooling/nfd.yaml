@@ -8,7 +8,7 @@ spec:
   source:
     chart: nfd/node-feature-discovery
     repoURL: https://kubernetes-sigs.github.io/node-feature-discovery/charts
-#    targetRevision: 1.16.1
+    targetRevision: 0.2.1
     helm:
       releaseName: node-feature-discovery
   destination:
