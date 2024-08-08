@@ -10,8 +10,7 @@ spec:
     repoURL: 'https://github.com/enrico-laboratory/homelab'
     helm:
       valueFiles:
-        - ../values.yaml
-
+        - ../value.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: "tooling"
