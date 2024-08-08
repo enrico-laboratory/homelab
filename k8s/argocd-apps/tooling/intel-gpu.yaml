@@ -18,6 +18,6 @@ spec:
         name: igpu
         sharedDevNum: 2
         nodeFeatureRule: false
-        resourceManager: false
+        resourceManager: true
         nodeSelector:
           intel.feature.node.kubernetes.io/gpu: 'true'
