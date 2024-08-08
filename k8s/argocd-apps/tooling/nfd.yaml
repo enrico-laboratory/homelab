@@ -21,3 +21,7 @@ spec:
               operator: "Equal"
               value: "true"
               effect: "NoSchedule"
+            - key: "gpu"
+              operator: "Equal"
+              value: "true"
+              effect: "NoSchedule"
