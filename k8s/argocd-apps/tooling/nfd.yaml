@@ -13,7 +13,7 @@ spec:
       releaseName: node-feature-discovery
       valuesObject:
         worker:
-          tolerations:
+          tolerations: {effect: NoSchedule, key: "arm", value: "true"}
 #            - effect: NoSchedule
 #              key: arm
 #              value: "true"
