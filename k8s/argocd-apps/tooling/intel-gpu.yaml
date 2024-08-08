@@ -14,3 +14,9 @@ spec:
     targetRevision: 0.30.0
     helm:
       releaseName: intel-device-plugins-gpu
+      values: |
+        name: igpu
+        sharedDevNum: 2
+        nodeFeatureRule: false
+        nodeSelector:
+          intel.feature.node.kubernetes.io/gpu: 'true'
