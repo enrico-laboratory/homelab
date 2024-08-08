@@ -14,9 +14,9 @@ spec:
       valuesObject:
         worker:
           tolerations:
-            - effect: NoSchedule
-              key: arm
-              value: "true"
+#            - effect: NoSchedule
+#              key: arm
+#              value: "true"
   destination:
     server: "https://kubernetes.default.svc"
     namespace: tooling
