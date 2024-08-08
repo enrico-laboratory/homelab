@@ -33,6 +33,8 @@ spec:
               value: "Europe/Amsterdam"
             - name: JELLYFIN_PublishedServerUrl
               value: "192.168.56.30"
+          securityContext:
+            privileged: true
           volumeMounts:
             - name: dri
               mountPath: /dev/dri
