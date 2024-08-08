@@ -5,19 +5,19 @@ metadata:
   namespace: argocd
 spec:
   project: tooling
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: tooling
   source:
     chart: node-feature-discovery
     repoURL: https://kubernetes-sigs.github.io/node-feature-discovery/charts
     targetRevision: 0.15.1
     helm:
       releaseName: node-feature-discovery
-      valuesObject:
+      values: |
         worker:
           tolerations:
             - key: "arm"
               operator: "Equal"
               value: "true"
               effect: "NoSchedule"
-  destination:
-    server: "https://kubernetes.default.svc"
-    namespace: tooling
