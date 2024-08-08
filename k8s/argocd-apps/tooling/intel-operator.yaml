@@ -9,7 +9,7 @@ spec:
     server: "https://kubernetes.default.svc"
     namespace: tooling
   source:
-    chart: dp-operator
+    chart: intel/intel-device-plugins-operator
     repoURL: https://intel.github.io/helm-charts/
     targetRevision: 0.26.0
     helm:
