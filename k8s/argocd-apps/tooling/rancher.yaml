@@ -16,10 +16,6 @@ spec:
           value: "k3s-1.enricoruggieri.com"
         - name: bootstrapPassword
           value: admin
-      values: |
-        ingress:
-          tls:
-            source: rancher
   destination:
     server: "https://kubernetes.default.svc"
     namespace: cattle-system
