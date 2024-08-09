@@ -16,4 +16,4 @@ spec:
           value: "true"
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: tooling
+    namespace: cert-manager
