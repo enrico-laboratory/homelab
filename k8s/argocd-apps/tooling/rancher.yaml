@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rancher
+  namespace: argocd
+spec:
+  project: tooling
+  source:
+    chart: rancher
+    repoURL: https://releases.rancher.com/server-charts/stable
+    targetRevision: 2.8.5
+    helm:
+      releaseName: rancher
+      parameters:
+        - name: hostname
+          value: "k3s-1.enricoruggieri.com"
+        - name: bootstrapPassword
+          value: admin
+      values: |
+        ingress:
+          tls:
+            source: rancher
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: cattle-system
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      selfHeal: true
