@@ -22,7 +22,7 @@ spec:
           effect: "NoSchedule"
       containers:
         - name: transmission
-          image: ghcr.io/linuxserver/transmission
+          image: ghcr.io/linuxserver/transmission:latest
           env:
             - name: PUID
               value: "1000"
