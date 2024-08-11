@@ -15,6 +15,11 @@ spec:
       labels:
         app: transmission
     spec:
+      tolerations:
+        - key: "arm"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
       containers:
         - name: transmission
           image: ghcr.io/linuxserver/transmission
