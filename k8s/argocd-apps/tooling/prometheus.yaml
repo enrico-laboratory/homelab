@@ -1,26 +1,26 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: "prometheus"
-  namespace: argocd
-spec:
-  project: "tooling"
-  source:
-    path: k8s/tooling/prometheus/kube-prometheus-stack
-    repoURL: 'https://github.com/enrico-laboratory/homelab'
-    helm:
-      valueFiles:
-        - ../value.yaml
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: "tooling"
-  syncPolicy:
-    automated:
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-#      - Replace=true
-#      - ServerSideApply=true
+#apiVersion: argoproj.io/v1alpha1
+#kind: Application
+#metadata:
+#  name: "prometheus"
+#  namespace: argocd
+#spec:
+#  project: "tooling"
+#  source:
+#    path: k8s/tooling/prometheus/kube-prometheus-stack
+#    repoURL: 'https://github.com/enrico-laboratory/homelab'
+#    helm:
+#      valueFiles:
+#        - ../value.yaml
+#  destination:
+#    server: https://kubernetes.default.svc
+#    namespace: "tooling"
+#  syncPolicy:
+#    automated:
+#      selfHeal: true
+#    syncOptions:
+#      - CreateNamespace=true
+##      - Replace=true
+##      - ServerSideApply=true
 
 
 
