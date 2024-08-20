@@ -5,12 +5,12 @@ metadata:
 data:
   custom.list: |
     192.168.100.21 proxmox.enricoruggieri.com
-    192.168.100.61 truenas.enricoruggieri.com
-    192.168.100.60 truenas-backup.enricoruggieri.com
-    192.168.100.70 ha.enricoruggieri.com
     192.168.100.40 win-gaming.enricoruggieri.com
     192.168.100.52 pihole.enricoruggieri.com
     192.168.100.54 linux-desktop.enricoruggieri.com
+    192.168.100.61 truenas.enricoruggieri.com
+    192.168.100.60 truenas-backup.enricoruggieri.com
+    192.168.100.70 ha.enricoruggieri.com
     192.168.100.71 win-desktop.enricoruggieri.com
     192.168.100.111 k3s-1.enricoruggieri.com
     192.168.100.112 k3s-2.enricoruggieri.com
