@@ -10,5 +10,4 @@ spec:
   selector:
     app: jellyfin
   ports:
-      targetPort: 8096
-
+    - port: 8096
