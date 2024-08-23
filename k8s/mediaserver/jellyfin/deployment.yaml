@@ -15,7 +15,6 @@ spec:
       labels:
         app: jellyfin
     spec:
-      nodeName: k3s-6
       containers:
         - name: jellyfin
           image: ghcr.io/linuxserver/jellyfin
@@ -79,3 +78,8 @@ spec:
             server: 192.168.100.61
             path: /mnt/slow-pool/media/video
             readOnly: false
+      tolerations:
+        - key: "gpu"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"

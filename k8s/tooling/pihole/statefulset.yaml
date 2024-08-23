@@ -14,7 +14,6 @@ spec:
       labels:
         app: pihole
     spec:
-      nodeName: k3s-2
       containers:
         - name: pihole
           image: pihole/pihole:latest
@@ -41,6 +40,11 @@ spec:
             - mountPath: /etc/pihole/custom.list
               name: dns-records
               subPath: custom.list
+      tolerations:
+        - key: "arm"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
       volumes:
         - name: dns-records
           configMap:
