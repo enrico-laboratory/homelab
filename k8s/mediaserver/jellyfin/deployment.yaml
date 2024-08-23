@@ -79,8 +79,3 @@ spec:
             server: 192.168.100.61
             path: /mnt/slow-pool/media/video
             readOnly: false
-      tolerations:
-        - key: "gpu"
-          operator: "Equal"
-          value: "true"
-          effect: "NoSchedule"
