@@ -20,19 +20,19 @@ data:
     192.168.100.115 k3s-5.enricoruggieri.com
     192.168.100.116 k3s-6.enricoruggieri.com
   05-pihole-custom-cname.conf: |
-    cname=jellyfin.enricoruggieri.com,k3s-1.enricoruggieri.com
-    cname=sonarr.enricoruggieri.com,k3s-1.enricoruggieri.com
-    cname=radarr.enricoruggieri.com,k3s-1.enricoruggieri.com
-    cname=transmission.enricoruggieri.com,k3s-1.enricoruggieri.com
-    cname=jackett.enricoruggieri.com,k3s-1.enricoruggieri.com
-    cname=organizr.enricoruggieri.com,k3s-1.enricoruggieri.com
-    cname=homer.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=alertmanager.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=argocd.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=audiobookshelf.enricoruggieri.com,k3s-1.enricoruggieri.com
     cname=calibreweb.enricoruggieri.com,k3s-1.enricoruggieri.com
-    cname=music-projects-web.enricoruggieri.com,k3s-1.enricoruggieri.com
     cname=grafana.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=homer.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=jackett.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=jellyfin.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=music-projects-web.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=librespeed.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=pihole.enricoruggieri.com,k3s-1.enricoruggieri.com
     cname=projects-local.enricoruggieri.com,k3s-1.enricoruggieri.com
     cname=prometheus.enricoruggieri.com,k3s-1.enricoruggieri.com
-    cname=alertmanager.enricoruggieri.com,k3s-1.enricoruggieri.com
-    cname=librespeed.enricoruggieri.com,k3s-1.enricoruggieri.com
-    cname=audiobookshelf.enricoruggieri.com,k3s-1.enricoruggieri.com
-    cname=argocd.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=radarr.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=sonarr.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=transmission.enricoruggieri.com,k3s-1.enricoruggieri.com
