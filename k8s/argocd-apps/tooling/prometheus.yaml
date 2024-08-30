@@ -37,3 +37,10 @@ spec:
               - job_name: node-exporter
                 static_configs:
                   - targets: ['192.168.100.21:9100']
+              - job_name: "hass"
+                metrics_path: /api/prometheus
+                authorization:
+                  credentials: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiMmU2NWJkNzEyYTA0Y2Y5YTIxMjhkYzQ1ZmEwNzIwNSIsImlhdCI6MTcyNDk5NjkxMiwiZXhwIjoyMDQwMzU2OTEyfQ.9ykic9jgVXhJa-saIaEzpYR_4ghLA_a5nKOxPRQZxuc"           
+                scheme: https
+                static_configs:
+                  - targets: ['192.168.100.70:8123']
