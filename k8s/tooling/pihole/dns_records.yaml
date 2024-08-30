@@ -28,6 +28,7 @@ data:
     cname=homer.enricoruggieri.com,k3s-1.enricoruggieri.com
     cname=jackett.enricoruggieri.com,k3s-1.enricoruggieri.com
     cname=jellyfin.enricoruggieri.com,k3s-1.enricoruggieri.com
+    cname=kavita.enricoruggieri.com,k3s-1.enricoruggieri.com
     cname=music-projects-web.enricoruggieri.com,k3s-1.enricoruggieri.com
     cname=librespeed.enricoruggieri.com,k3s-1.enricoruggieri.com
     cname=pihole.enricoruggieri.com,k3s-1.enricoruggieri.com
