@@ -39,9 +39,6 @@ spec:
                   - targets: 
                     - '192.168.100.21:9100'
                     - '192.168.100.80:9100'
-              - job_name: node-exporter
-                static_configs:
-                  - targets: []
               - job_name: "hass"
                 metrics_path: /api/prometheus
                 authorization:
