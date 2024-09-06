@@ -28,6 +28,8 @@ spec:
               name: config
             - mountPath: /manga
               name: books
+            - mountPath: /books-kavita
+              name: books-kavita
       volumes:
         - name: config
           nfs:
@@ -37,3 +39,7 @@ spec:
           nfs:
             server: 192.168.100.61
             path: /mnt/slow-pool/library/books
+        - name: books-kavita
+          nfs:
+            server: 192.168.100.61
+            path: /mnt/slow-pool/library-kavita
