@@ -4,6 +4,7 @@ metadata:
   name: pihole-dns-configs
 data:
   custom.list: |
+    192.168.100.2 ap.enricoruggieri.com # asus router access point
     192.168.100.21 proxmox.enricoruggieri.com
     192.168.100.40 win-gaming.enricoruggieri.com
     192.168.100.52 pihole.enricoruggieri.com
