@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "home-assistant"
+  namespace: argocd
+spec:
+  project: "home-automation"
+  source:
+    repoURL: "https://github.com/enrico-laboratory/homelab"
+    targetRevision: HEAD
+    path: "k8s/home-automation/home-assistant"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: "home-automation"
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
