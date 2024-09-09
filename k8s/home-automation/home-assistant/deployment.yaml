@@ -15,6 +15,11 @@ spec:
       labels:
         app: home-assistant
     spec:
+      tolerations:
+        - key: "gpu"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
       containers:
         - name: home-assistant
           image: homeassistant/home-assistant:2024.9
