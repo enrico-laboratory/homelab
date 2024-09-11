@@ -8,7 +8,7 @@ metadata:
 spec:
   selector:
     app: mosquitto
-  type: ClusterIP
+  type: LoadBalancer
   ports:
     - name: mqtt
       protocol: TCP
