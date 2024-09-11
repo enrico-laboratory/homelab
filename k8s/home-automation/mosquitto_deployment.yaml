@@ -12,12 +12,12 @@ spec:
     metadata:
       labels:
         app: mosquitto
-    tolerations:
-      - key: "arm"
-        operator: "Equal"
-        value: "true"
-        effect: "NoSchedule"
     spec:
+      tolerations:
+        - key: "arm"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
       containers:
         - name: mosquitto
           image: eclipse-mosquitto
