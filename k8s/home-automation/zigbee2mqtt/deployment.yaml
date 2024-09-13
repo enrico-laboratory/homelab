@@ -20,6 +20,8 @@ spec:
           operator: "Equal"
           value: "true"
           effect: "NoSchedule"
+      nodeName:
+        k3s-2
       containers:
         - name: zigbee2mqtt
           image: koenkk/zigbee2mqtt:latest
@@ -47,7 +49,7 @@ spec:
       volumes:
         - name: sonoff
           hostPath:
-            path: /dev/ttyACM0
+            path: /dev/serial/by-id/usb-ITEAD_SONOFF_Zigbee_3.0_USB_Dongle_Plus_V2_20240105134827-if00
         - name: data
           nfs:
             server: 192.168.100.61
