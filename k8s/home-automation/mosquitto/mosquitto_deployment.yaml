@@ -33,10 +33,10 @@ spec:
             - mountPath: /mosquitto/config/user
               name: config
               subPath: user
-            - mountPath: /mosquitto/data
-              name: data
-            - mountPath: /mosquitto/log
-              name: log
+#            - mountPath: /mosquitto/data
+#              name: data
+#            - mountPath: /mosquitto/log
+#              name: log
       volumes:
         - name: config
           configMap:
