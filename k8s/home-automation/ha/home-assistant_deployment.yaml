@@ -20,6 +20,8 @@ spec:
           operator: "Equal"
           value: "true"
           effect: "NoSchedule"
+      nodeName:
+          k3s-2
       containers:
         - name: home-assistant
           image: homeassistant/home-assistant:2024.9
