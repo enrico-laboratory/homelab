@@ -6,6 +6,8 @@ metadata:
 spec:
   project: "home-automation"
   source:
+    directory:
+      recurse: true
     repoURL: "https://github.com/enrico-laboratory/homelab"
     targetRevision: HEAD
     path: "k8s/home-automation"
