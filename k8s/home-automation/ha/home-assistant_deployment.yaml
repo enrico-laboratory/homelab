@@ -24,7 +24,7 @@ spec:
           k3s-2
       containers:
         - name: home-assistant
-          image: homeassistant/home-assistant:2024.9
+          image: homeassistant/home-assistant:2024.8.2
           ports:
             - containerPort: 8123
           volumeMounts:
