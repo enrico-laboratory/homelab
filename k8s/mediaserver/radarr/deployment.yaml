@@ -22,7 +22,7 @@ spec:
           effect: "NoSchedule"
       containers:
         - name: radarr
-          image: ghcr.io/linuxserver/radarr:5.4.6
+          image: ghcr.io/linuxserver/radarr:5.9.1
           env:
             - name: PUID
               value: "1000"
