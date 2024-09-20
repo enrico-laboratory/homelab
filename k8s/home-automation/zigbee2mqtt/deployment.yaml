@@ -49,7 +49,7 @@ spec:
       volumes:
         - name: sonoff
           hostPath:
-            path: /dev/serial/by-id/usb-ITEAD_SONOFF_Zigbee_3.0_USB_Dongle_Plus_V2_20240105134827-if00
+            path: /dev/ttyACM0
         - name: data
           nfs:
             server: 192.168.100.61
