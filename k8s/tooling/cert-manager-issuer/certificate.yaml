@@ -1,0 +1,25 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: dns-cert-enricoruggiericom
+spec:
+  secretName: dns-cert-enricoruggiericom
+  commonName: enricoruggieri.com
+  # You can also use RSA keys, I prefer ECC certs.
+  privateKey:
+    # It is better to use new key for new certificate.
+    rotationPolicy: Always
+    algorithm: ECDSA
+    encoding: PKCS8
+    size: 256
+  usages:
+    - server auth
+    - client auth
+  # I can add wildcard domain here because I use an issuer using dns01 method.
+  dnsNames:
+    - "*.enricoruggieri.com"
+    - "enricoruggieri.com"
+  issuerRef:
+    # Issuer name wiut
+    name: cloudflare-cluster-issuer
+    kind: ClusterIssuer
