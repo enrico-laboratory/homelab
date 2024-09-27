@@ -7,7 +7,7 @@ spec:
   tls:
     - hosts:
        - "jellyfin.enricoruggieri.com"
-      secretName: dns-cert-enricoruggiericom
+      secretName: dns-cert-enricoruggiericom-jellyfin
   rules:
     - host: "jellyfin.enricoruggieri.com"
       http:
