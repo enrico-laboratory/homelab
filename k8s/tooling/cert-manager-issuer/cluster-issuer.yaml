@@ -3,9 +3,14 @@ kind: ClusterIssuer
 metadata:
   name: cloudflare
 spec:
-  solvers:
-    - dns01:
-        cloudflare:
-          apiTokenSecretRef:
-            name: cloudflare-api-token
-            key: api-token
+  acme:
+    email: enr.ruggieri.mail@gmail.com
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-cluster-issuer-key
+    solvers:
+      - dns01:
+          cloudflare:
+            apiTokenSecretRef:
+              name: cloudflare-api-token
+              key: api-token
