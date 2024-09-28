@@ -4,10 +4,10 @@ metadata:
   name: jellyfin
   namespace: mediaserver
 spec:
-  tls:
-    - hosts:
-       - "jellyfin.enricoruggieri.com"
-      secretName: dns-cert-enricoruggiericom-jellyfin
+#  tls:
+#    - hosts:
+#       - "jellyfin.enricoruggieri.com"
+#      secretName: dns-cert-enricoruggiericom-jellyfin
   rules:
     - host: "jellyfin.enricoruggieri.com"
       http:
