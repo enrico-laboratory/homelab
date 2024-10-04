@@ -18,11 +18,11 @@ spec:
       containers:
         - name: jellyfin
           image: ghcr.io/linuxserver/jellyfin
-          resources:
-            limits:
-              cpu: "4"
-            requests:
-              cpu: "2"
+#          resources:
+#            limits:
+#              cpu: "4"
+#            requests:
+#              cpu: "2"
           env:
             - name: PUID
               value: "1000"
