@@ -27,6 +27,10 @@ spec:
           image: homeassistant/home-assistant:2024.8.2
           ports:
             - containerPort: 8123
+          lifecycle:
+            postStart:
+              exec:
+                command: [ "/bin/sh", "-c", "wget", "-O", "https://get.hacs.xyz", "|", "bash", "-" ]
           volumeMounts:
             - mountPath: /config
               name: config
