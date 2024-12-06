@@ -19,6 +19,7 @@ data:
     192.168.100.114 k3s-4.enricoruggieri.com
     192.168.100.115 k3s-5.enricoruggieri.com
     192.168.100.116 k3s-6.enricoruggieri.com
+    192.168.100.130 k3s-proxy.enricoruggieri.com
   05-pihole-custom-cname.conf: |
     cname=alertmanager.enricoruggieri.com,k3s-1.enricoruggieri.com
     cname=argocd.enricoruggieri.com,k3s-1.enricoruggieri.com
