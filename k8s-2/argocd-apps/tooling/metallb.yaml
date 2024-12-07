@@ -4,7 +4,7 @@ metadata:
   name: "metallb"
   namespace: argocd
 spec:
-  project: "tooling"
+  project: "metallb-system"
   source:
     chart: metallb
     repoURL: https://metallb.github.io/metallb
@@ -13,7 +13,7 @@ spec:
       releaseName: metallb
   destination:
     server: https://kubernetes.default.svc
-    namespace: "tooling"
+    namespace: "metallb-system"
   syncPolicy:
 #    automated:
 #      selfHeal: true
