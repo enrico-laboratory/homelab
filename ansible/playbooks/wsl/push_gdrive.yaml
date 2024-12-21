@@ -1,0 +1,9 @@
+- name: push wsl repo dir to gdrive cronjob
+  hosts: localhost
+  tasks:
+    - name: cronjob
+      cron:
+        name: push repo folder changes to gdrive
+        minute: '0'
+        hour: '9'
+        job: /usr/bin/rclone copy --log-file=/home/eruggieri/repos/_push_logs/$(date '+%Y-%m-%d') --log-level INFO /home/eruggieri/repos/ gdrive:reposWSL
