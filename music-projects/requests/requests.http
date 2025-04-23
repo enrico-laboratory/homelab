@@ -1,0 +1,10 @@
+@hostname = http://localhost:5000
+
+GET {{hostname}}/music_project/890
+### 
+GET {{hostname}}/music_project
+
+### 
+GET {{hostname}}/api/task/45
+### 
+GET {{hostname}}/api/task?filter=Palestrina and Marenzio&sort=older
